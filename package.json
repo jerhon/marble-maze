@@ -1,0 +1,22 @@
+{
+  "name": "honlsoft-maze-marbles",
+  "version": "1.0.0",
+  "description": "A simple maze game using the gyroscope on a phone.  Combine the two marbles to win the level.",
+  "main": "index.js",
+  "dependencies": {
+    "phaser": "^3.19.0"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.0.4",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.6.2",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
