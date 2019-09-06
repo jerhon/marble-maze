@@ -38,7 +38,7 @@ export class GameScene extends Phaser.Scene {
   private beta: number = 0;
   private gamma: number = 0;
   private collider: Phaser.Physics.Arcade.Collider;
-  private collider2: Phaser.Physics.Arcade.Collider;
+  private gameEndCollider: Phaser.Physics.Arcade.Collider;
 
   constructor() {
     super(sceneConfig);
@@ -83,7 +83,11 @@ export class GameScene extends Phaser.Scene {
     this.marble2.body.setCollideWorldBounds(true);
 
     this.physics.add.collider([this.marble1, this.marble2], this.walls);
-    this.physics.add.overlap(this.marble1, this.marble2);
+    this.gameEndCollider = this.physics.add.overlap(this.marble1, this.marble2, this.gameEnd.bind(this));
+  }
+
+  gameEnd() {
+    this.scene.start('Loading');
   }
 
   getCoordinates(p: Point): Point {
@@ -96,8 +100,8 @@ export class GameScene extends Phaser.Scene {
   public update(time: number, delta: number) {
     // TODO: add motion of player, and end goal of combining the marbles
     for (let marble of [this.marble1, this.marble2]) {
-      marble.body.setVelocityX( (this.gamma / 180) * 300 );
-      marble.body.setVelocityY( (this.beta / 180) * 300 );
+      marble.body.setVelocityX( (this.gamma / 180) * 800 );
+      marble.body.setVelocityY( (this.beta / 180) * 800 );
 
       if (this.cursorKeys.down.isDown) {
         marble.body.setVelocityY(300);
@@ -111,7 +115,6 @@ export class GameScene extends Phaser.Scene {
         marble.body.setVelocityX(300);
       }
     }
-
   }
 
   public deviceOrientationChanged(evt: DeviceOrientationEvent) {
