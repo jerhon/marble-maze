@@ -54,7 +54,7 @@ export class GameScene extends Phaser.Scene {
     if ((window as any).DeviceOrientationEvent) {
       window.addEventListener("deviceorientation", this.deviceOrientationChanged.bind(this));
     }
-    
+
     let maze = data.maze;
     this.level = data.level;
 
@@ -111,6 +111,8 @@ export class GameScene extends Phaser.Scene {
     for (let marble of [this.marble1, this.marble2]) {
       marble.body.setVelocityX( (this.gamma / 180) * 800 );
       marble.body.setVelocityY( (this.beta / 180) * 800 );
+      marble.body.setBounceY(0.5);
+      marble.body.setBounceX(0.5);
 
       if (this.cursorKeys.down.isDown) {
         marble.body.setAccelerationY(300);
