@@ -1,0 +1,7 @@
+/** This is a hack to keep the site from flipping */
+@media only screen and (orientation:landscape){
+    body {
+        height: 100vw;
+        transform: rotate(90deg);
+    }
+}
