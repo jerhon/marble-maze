@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -26,14 +27,16 @@ module.exports = {
 
   output: {
     filename: 'app.bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'var',
+    library: 'game'
   },
 
   mode: 'development',
 
   devServer: {
     contentBase: path.resolve(__dirname, 'dist'),
-    https: true
+    https: false
   },
 
   plugins: [
@@ -49,12 +52,20 @@ module.exports = {
       {
         from: path.resolve(__dirname, 'src/style.css'),
         to: path.resolve(__dirname, 'dist')
+      },
+      {
+        from: path.resolve(__dirname, 'src/manifest.json'),
+        to: path.resolve(__dirname, 'dist')
       }
     ]),
     new webpack.DefinePlugin({
       'typeof CANVAS_RENDERER': JSON.stringify(true),
       'typeof WEBGL_RENDERER': JSON.stringify(true)
     }),
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true
+    })
   ],
 
   optimization: {

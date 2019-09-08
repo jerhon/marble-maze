@@ -10,7 +10,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
  
   width: window.innerWidth,
   height: window.innerHeight,
- 
+   
   physics: {
     default: 'arcade',
     arcade: {
@@ -21,8 +21,17 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   scene: [LoadingScene, GameScene],
   parent: 'game',
   backgroundColor: '#000000',
-  disableContextMenu: true
-
+  disableContextMenu: true,
 };
- 
+
 export const game = new Phaser.Game(gameConfig);
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js').then(registration => {
+          console.log('SW registered: ', registration);
+      }).catch(registrationError => {
+          console.log('SW registration failed: ', registrationError);
+      });
+  });
+}
