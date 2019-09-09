@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
-import { GameScene } from './game';
-import { LoadingScene } from './loading';
+import { GameScene } from './scenes/game';
+import { LoadingScene } from './scenes/loading';
+import { MenuScene } from './scenes/menu';
 
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
