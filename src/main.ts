@@ -14,9 +14,9 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
    
   physics: {
     default: 'arcade',
-    arcade: {
-      debug: true,
-    },
+    //arcade: {
+    //  debug: true,
+    //},
   },
   
   scene: [MenuScene, LoadingScene, GameScene],
