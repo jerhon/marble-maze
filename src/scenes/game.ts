@@ -78,6 +78,7 @@ export class GameScene extends Phaser.Scene {
         }
       }
     }
+    this.walls.add(this.add.rectangle(this.width / 2, this.height + this.wallYOffset, this.width, this.wallHeight, 0xFFFFFF));
 
     this.radius = Math.min( this.wallWidth / 3, this.wallHeight / 3);
     
