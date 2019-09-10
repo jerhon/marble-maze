@@ -19,7 +19,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     },
   },
   
-  scene: [LoadingScene, GameScene],
+  scene: [MenuScene, LoadingScene, GameScene],
   parent: 'game',
   backgroundColor: '#000000',
   disableContextMenu: true,
