@@ -88,7 +88,7 @@ export class GameScene extends Phaser.Scene {
     this.marble1 = this.add.circle(startCoords.x, startCoords.y, this.radius, 0xAAAAAA) as any;
     this.physics.add.existing(this.marble1);
     this.marble1.body.setCollideWorldBounds(true);
-    this.marble1.body.setBounce(0.75, 0.75);
+    this.marble1.body.setBounce(0.25, 0.25);
     this.marble1.body.setDrag(20, 20);
 
     let endCoords = this.getCoordinates({x: maze.endingPosition[0], y: maze.endingPosition[1]});
