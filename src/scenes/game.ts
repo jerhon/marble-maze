@@ -42,6 +42,7 @@ export class GameScene extends Phaser.Scene {
   private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   private beta: number = 0;
   private gamma: number = 0;
+  private hasOrientation: boolean = false;
   private collider: Phaser.Physics.Arcade.Collider;
   private gameEndCollider: Phaser.Physics.Arcade.Collider;
   private level: number = 0;
@@ -52,6 +53,7 @@ export class GameScene extends Phaser.Scene {
   
   public create(data: GameData) {
     if ((window as any).DeviceOrientationEvent) {
+      this.hasOrientation = true;
       window.addEventListener("deviceorientation", this.deviceOrientationChanged.bind(this));
     }
 
@@ -114,7 +116,7 @@ export class GameScene extends Phaser.Scene {
   public update(time: number, delta: number) {
     // TODO: add motion of player, and end goal of combining the marbles
     for (let marble of [this.marble1, this.marble2]) {
-      if (this.gamma && this.beta) {
+      if (this.hasOrientation) {
         marble.body.setAccelerationX( (this.gamma / 180) * 100 );
         marble.body.setAccelerationY( (this.beta / 180) * 100 );
       }
