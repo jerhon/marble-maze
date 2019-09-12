@@ -119,23 +119,22 @@ export class GameScene extends Phaser.Scene {
       if (this.hasOrientation) {
         marble.body.setAccelerationX( (this.gamma / 180) * 100 );
         marble.body.setAccelerationY( (this.beta / 180) * 100 );
-      }
-      
-     
-      if (this.cursorKeys.down.isDown) {
-        marble.body.setAccelerationY(20);
-      } else if (this.cursorKeys.up.isDown) {
-        marble.body.setAccelerationY(-20);
-      } else {
-        marble.body.setAccelerationY(0);
-      } 
-      
-      if (this.cursorKeys.left.isDown) {
-        marble.body.setAccelerationX(-20);
-      } else if (this.cursorKeys.right.isDown) {
-        marble.body.setAccelerationX(20);
-      } else {
-        marble.body.setAccelerationX(0);
+      } else { 
+        if (this.cursorKeys.down.isDown) {
+          marble.body.setAccelerationY(20);
+        } else if (this.cursorKeys.up.isDown) {
+          marble.body.setAccelerationY(-20);
+        } else {
+          marble.body.setAccelerationY(0);
+        } 
+        
+        if (this.cursorKeys.left.isDown) {
+          marble.body.setAccelerationX(-20);
+        } else if (this.cursorKeys.right.isDown) {
+          marble.body.setAccelerationX(20);
+        } else {
+          marble.body.setAccelerationX(0);
+        }
       }
     }
   }
