@@ -86,11 +86,15 @@ export class GameScene extends Phaser.Scene {
     this.marble1 = this.add.circle(startCoords.x, startCoords.y, this.radius, 0xAAAAAA) as any;
     this.physics.add.existing(this.marble1);
     this.marble1.body.setCollideWorldBounds(true);
+    this.marble1.body.setBounce(0.75, 0.75);
+    this.marble1.body.setDrag(20, 20);
 
     let endCoords = this.getCoordinates({x: maze.endingPosition[0], y: maze.endingPosition[1]});
     this.marble2 = this.add.circle(endCoords.x, endCoords.y, this.radius, 0xFF0000) as any;
     this.physics.add.existing(this.marble2);
     this.marble2.body.setCollideWorldBounds(true);
+    this.marble2.body.setBounce(0.75, 0.75);
+    this.marble1.body.setDrag(20, 20);
 
     this.physics.add.collider([this.marble1, this.marble2], this.walls);
     this.gameEndCollider = this.physics.add.overlap(this.marble1, this.marble2, this.gameEnd.bind(this));
@@ -110,21 +114,26 @@ export class GameScene extends Phaser.Scene {
   public update(time: number, delta: number) {
     // TODO: add motion of player, and end goal of combining the marbles
     for (let marble of [this.marble1, this.marble2]) {
-      marble.body.setVelocityX( (this.gamma / 180) * 800 );
-      marble.body.setVelocityY( (this.beta / 180) * 800 );
-      marble.body.setBounceY(0.5);
-      marble.body.setBounceX(0.5);
-
-      if (this.cursorKeys.down.isDown) {
-        marble.body.setAccelerationY(300);
-      } else if (this.cursorKeys.up.isDown) {
-        marble.body.setAccelerationY(-300);
+      if (this.gamma && this.beta) {
+        marble.body.setAccelerationX( (this.gamma / 180) * 100 );
+        marble.body.setAccelerationY( (this.beta / 180) * 100 );
       }
       
+     
+      if (this.cursorKeys.down.isDown) {
+        marble.body.setAccelerationY(20);
+      } else if (this.cursorKeys.up.isDown) {
+        marble.body.setAccelerationY(-20);
+      } else {
+        marble.body.setAccelerationY(0);
+      } 
+      
       if (this.cursorKeys.left.isDown) {
-        marble.body.setAccelerationX(-300);
+        marble.body.setAccelerationX(-20);
       } else if (this.cursorKeys.right.isDown) {
-        marble.body.setAccelerationX(300);
+        marble.body.setAccelerationX(20);
+      } else {
+        marble.body.setAccelerationX(0);
       }
     }
   }
