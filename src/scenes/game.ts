@@ -95,7 +95,7 @@ export class GameScene extends Phaser.Scene {
     this.marble2 = this.add.circle(endCoords.x, endCoords.y, this.radius, 0xFF0000) as any;
     this.physics.add.existing(this.marble2);
     this.marble2.body.setCollideWorldBounds(true);
-    this.marble2.body.setBounce(0.75, 0.75);
+    this.marble2.body.setBounce(0.15, 0.15);
     this.marble1.body.setDrag(20, 20);
 
     this.physics.add.collider([this.marble1, this.marble2], this.walls);
