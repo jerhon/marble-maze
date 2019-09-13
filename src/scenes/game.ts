@@ -15,6 +15,7 @@ export interface Maze {
 export interface GameData {
   maze: Maze;
   level: number;
+  timed: boolean;
 }
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -42,18 +43,18 @@ export class GameScene extends Phaser.Scene {
   private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   private beta: number = 0;
   private gamma: number = 0;
-  private hasOrientation: boolean = false;
-  private collider: Phaser.Physics.Arcade.Collider;
-  private gameEndCollider: Phaser.Physics.Arcade.Collider;
   private level: number = 0;
+  private startTime: number;
+  private timerText: Phaser.GameObjects.Text;
+  private gameData: GameData;
 
   constructor() {
     super(sceneConfig);
   }
   
   public create(data: GameData) {
+    this.gameData = data;
     if ((window as any).DeviceOrientationEvent) {
-      this.hasOrientation = true;
       window.addEventListener("deviceorientation", this.deviceOrientationChanged.bind(this));
     }
 
@@ -81,6 +82,7 @@ export class GameScene extends Phaser.Scene {
       }
     }
     this.walls.add(this.add.rectangle(this.width / 2, this.height + this.wallYOffset, this.width, this.wallHeight, 0xFFFFFF));
+    this.walls.add(this.add.rectangle(this.width + this.wallXOffset, this.height / 2, this.wallWidth, this.height, 0xFFFFFF));
 
     this.radius = Math.min( this.wallWidth / 3, this.wallHeight / 3);
     
@@ -99,7 +101,15 @@ export class GameScene extends Phaser.Scene {
     this.marble1.body.setDrag(20, 20);
 
     this.physics.add.collider([this.marble1, this.marble2], this.walls);
-    this.gameEndCollider = this.physics.add.overlap(this.marble1, this.marble2, this.gameEnd.bind(this));
+    let gameEndCollider = this.physics.add.overlap(this.marble1, this.marble2, this.gameEnd.bind(this));
+
+    if (this.height < this.game.canvas.height) {
+      this.timerText = this.add.text(20, this.height + this.wallHeight + 20, "" + this.time);
+    } else {
+      this.timerText = this.add.text(this.width + this.wallWidth + 20, 20, "" + this.time);
+    }
+    
+    
   }
 
   gameEnd() {
@@ -114,28 +124,36 @@ export class GameScene extends Phaser.Scene {
   }
   
   public update(time: number, delta: number) {
+    if (!this.startTime) { 
+      this.startTime = time;
+    }
+
     // TODO: add motion of player, and end goal of combining the marbles
     for (let marble of [this.marble1, this.marble2]) {
-      if (this.hasOrientation) {
-        marble.body.setAccelerationX( (this.gamma / 180) * 100 );
+      if (this.cursorKeys.down.isDown) {
+        marble.body.setAccelerationY(20);
+      } else if (this.cursorKeys.up.isDown) {
+        marble.body.setAccelerationY(-20);
+      } else {
         marble.body.setAccelerationY( (this.beta / 180) * 100 );
-      } else { 
-        if (this.cursorKeys.down.isDown) {
-          marble.body.setAccelerationY(20);
-        } else if (this.cursorKeys.up.isDown) {
-          marble.body.setAccelerationY(-20);
-        } else {
-          marble.body.setAccelerationY(0);
-        } 
-        
-        if (this.cursorKeys.left.isDown) {
-          marble.body.setAccelerationX(-20);
-        } else if (this.cursorKeys.right.isDown) {
-          marble.body.setAccelerationX(20);
-        } else {
-          marble.body.setAccelerationX(0);
-        }
+        ;
+      } 
+      
+      if (this.cursorKeys.left.isDown) {
+        marble.body.setAccelerationX(-20);
+      } else if (this.cursorKeys.right.isDown) {
+        marble.body.setAccelerationX(20);
+      } else {
+        marble.body.setAccelerationX( (this.gamma / 180) * 100 )
       }
+    }
+
+    let timeOffset = Math.floor((time - this.startTime) / 1000);
+    let overallTime = this.gameData.timed ? 30 - timeOffset : timeOffset;
+    this.timerText.setText("" + overallTime);
+
+    if (time - this.startTime > 30000) {
+      // Game over
     }
   }
 
