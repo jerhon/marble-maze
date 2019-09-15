@@ -1,4 +1,5 @@
 import { Physics } from "phaser";
+import { GameStateMachine } from "./gameStateMachine";
 
 
 /**
@@ -18,10 +19,12 @@ export interface GameData {
   timed: boolean;
 }
 
+export const GAME_SCENE = 'Game';
+
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
     active: false,
     visible: false,
-    key: 'Game',
+    key: GAME_SCENE,
 };
 
 interface Point {
@@ -47,6 +50,7 @@ export class GameScene extends Phaser.Scene {
   private startTime: number;
   private timerText: Phaser.GameObjects.Text;
   private gameData: GameData;
+  private stateMachine: GameStateMachine;
 
   constructor() {
     super(sceneConfig);
@@ -54,6 +58,7 @@ export class GameScene extends Phaser.Scene {
   
   public create(data: GameData) {
     this.gameData = data;
+    this.stateMachine = new GameStateMachine(this);
     if ((window as any).DeviceOrientationEvent) {
       window.addEventListener("deviceorientation", this.deviceOrientationChanged.bind(this));
     }
@@ -113,6 +118,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   gameEnd() {
+    this.scene.stop(GAME_SCENE);
     this.scene.start('Loading', {level: this.level+1});
   }
 
@@ -153,7 +159,8 @@ export class GameScene extends Phaser.Scene {
     this.timerText.setText("" + overallTime);
 
     if (time - this.startTime > 30000) {
-      // Game over
+      this.scene.stop(GAME_SCENE);
+      this.stateMachine.startLose();
     }
   }
 

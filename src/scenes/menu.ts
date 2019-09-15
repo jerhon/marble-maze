@@ -1,8 +1,10 @@
 
+export const MENU_SCENE = 'Menu';
+
 const menuConfig : Phaser.Types.Scenes.SettingsConfig = {
     active: false,
     visible: false,
-    key: 'Menu'
+    key: MENU_SCENE
 }
 
 export class MenuScene extends Phaser.Scene {
@@ -61,6 +63,9 @@ export class MenuScene extends Phaser.Scene {
         switch (option) {
             case "Liesure Game":
                 this.scene.start("Loading", { level: 1 });
+                break;
+            case "Timed Game":
+                this.scene.start("Loading", {level: 1, timed: true});
                 break;
         }
     }

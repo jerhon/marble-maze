@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { GameScene } from './scenes/game';
 import { LoadingScene } from './scenes/loading';
 import { MenuScene } from './scenes/menu';
+import { MESSAGE_SCENE, MessageScene } from './scenes/message';
 
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
@@ -19,7 +20,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     //},
   },
   
-  scene: [MenuScene, LoadingScene, GameScene],
+  scene: [MenuScene, LoadingScene, GameScene, MessageScene],
   parent: 'game',
   backgroundColor: '#000000',
   disableContextMenu: true,

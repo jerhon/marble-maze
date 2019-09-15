@@ -1,12 +1,15 @@
 
+export const LOADING_SCENE = 'Loading';
+
 const loadingConfig : Phaser.Types.Scenes.SettingsConfig = {
     active: false,
     visible: false,
-    key: 'Loading'
+    key: LOADING_SCENE
 }
 
 export interface LoadingData {
   level: number;
+  timed: boolean;
 }
 
 export class LoadingScene extends Phaser.Scene {
@@ -28,7 +31,7 @@ export class LoadingScene extends Phaser.Scene {
         .then((r) =>
           r.json().then((r1) => {
             console.log('level', level);
-            this.scene.start('Game', {maze: r1, level});
+            this.scene.start('Game', {maze: r1, level, timed: data.timed});
           })
         );
   
