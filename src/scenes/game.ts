@@ -209,12 +209,8 @@ export class GameScene extends Phaser.Scene {
       }
   }
 
-  public update(time: number, delta: number) {
-    if (!this.startTime) { 
-      this.startTime = time;
-    }
-
-    // TODO: add motion of player, and end goal of combining the marbles
+  /** Update the motion of objects when a frame tick occurs. */
+  updateMotion() {
     for (let marble of [this.marble1]) {
       if (this.cursorKeys.down.isDown) {
         marble.body.setAccelerationY(20);
@@ -234,6 +230,16 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
+  }
+
+  /** Update the time on the game. */
+  updateTime(time: number) {
+    if (!this.startTime) { 
+      this.startTime = time;
+    }
+
+    // TODO: add motion of player, and end goal of combining the marbles
+    
     let timeOffset = Math.floor((time - this.startTime) / 1000);
     let overallTime = this.gameData.timed ? 30 - timeOffset : timeOffset;
     this.timerText.setText("" + overallTime);
@@ -247,6 +253,12 @@ export class GameScene extends Phaser.Scene {
         this.stateMachine.startLose();
       }
     }
+  }
+
+  /** Update for a single frame. */
+  public update(time: number, delta: number) {
+    this.updateMotion();
+    this.updateTime(time);
   }
 
   public deviceOrientationChanged(evt: DeviceOrientationEvent) {
