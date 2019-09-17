@@ -6,22 +6,26 @@ import { MENU_SCENE } from "./menu";
 
 export class GameStateMachine {
 
-    constructor(private readonly game: Phaser.Scene) { }
+    constructor(private readonly scene: Phaser.Scene) { }
 
     startLoading(data: LoadingData) {
-        this.game.scene.start(LOADING_SCENE, data);
+        this.scene.scene.stop();
+        this.scene.scene.start(LOADING_SCENE, data);
     }
 
     startGame(data: GameData) {
-        this.game.scene.start(GAME_SCENE, data);
+        this.scene.scene.stop();
+        this.scene.scene.start(GAME_SCENE, data);
     }
 
     startMenu() {
-        this.game.scene.start(MENU_SCENE);
+        this.scene.scene.stop();
+        this.scene.scene.start(MENU_SCENE);
     }
 
     startMessage(data: MessageData) {
-        this.game.scene.start(MESSAGE_SCENE, data);
+        this.scene.scene.stop();
+        this.scene.scene.start(MESSAGE_SCENE, data);
     }
 
     startLose() {
