@@ -34,7 +34,7 @@ interface Point {
 
 export class GameScene extends Phaser.Scene {
   private marble1: Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body } ;
-  private marble2: Phaser.GameObjects.Arc  & { body : Phaser.Physics.Arcade.Body };
+  private endSquare: Phaser.GameObjects.Rectangle  & { body : Phaser.Physics.Arcade.Body };
   private walls: Phaser.GameObjects.Group;
 
   
@@ -104,10 +104,10 @@ export class GameScene extends Phaser.Scene {
     let startCoords = this.getCoordinates({x: maze.startingPosition[0], y: maze.startingPosition[1]});
     let endCoords = this.getCoordinates({x: maze.endingPosition[0], y: maze.endingPosition[1]});
     this.marble1 = this.createMarble(startCoords.x, startCoords.y);
-    this.marble2 = this.createMarble(endCoords.x, endCoords.y);
+    this.endSquare = this.createEndSquare(endCoords.x, endCoords.y);
 
-    this.physics.add.collider([this.marble1, this.marble2], this.walls);
-    let gameEndCollider = this.physics.add.overlap(this.marble1, this.marble2, this.nextLevel.bind(this));
+    this.physics.add.collider([this.marble1, this.endSquare], this.walls);
+    let gameEndCollider = this.physics.add.overlap(this.marble1, this.endSquare, this.nextLevel.bind(this));
 
     
     this.startTime = 0;
@@ -181,11 +181,19 @@ export class GameScene extends Phaser.Scene {
   /** Creates a marble. */
   createMarble(x: number, y: number) : Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body } {
     let marble = this.add.circle(x, y, this.marbleDim.radius, 0xFF0000) as any;
-    this.physics.add.existing(marble);
+    let obj = this.physics.add.existing(marble);
     marble.body.setCollideWorldBounds(true);
-    marble.body.setBounce(0.15, 0.15);
+    marble.body.setBounce(0.25, 0.25);
     marble.body.setDrag(20, 20);
-    return marble as Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body };
+    let ret = marble as Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body };
+    ret.body.setCircle(this.marbleDim.radius);
+    return ret;
+  }
+
+  createEndSquare(x: number, y: number) :  Phaser.GameObjects.Rectangle & { body : Phaser.Physics.Arcade.Body } {
+    let end = this.add.rectangle(x, y, this.wallDim.width, this.wallDim.height, 0xFF3300);
+    this.physics.add.existing(end, true);
+    return end as Phaser.GameObjects.Rectangle & { body : Phaser.Physics.Arcade.Body } ;
   }
 
   /** Moves to the next level. */
@@ -207,7 +215,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     // TODO: add motion of player, and end goal of combining the marbles
-    for (let marble of [this.marble1, this.marble2]) {
+    for (let marble of [this.marble1]) {
       if (this.cursorKeys.down.isDown) {
         marble.body.setAccelerationY(20);
       } else if (this.cursorKeys.up.isDown) {
