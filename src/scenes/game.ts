@@ -230,7 +230,7 @@ export class GameScene extends Phaser.Scene {
       } else if (this.cursorKeys.up.isDown) {
         marble.body.setAccelerationY(-20);
       } else {
-        marble.body.setAccelerationY( (this.beta / 180) * 100 );
+        marble.body.setAccelerationY( (this.beta / 180) * 150 );
         ;
       } 
       
@@ -239,7 +239,7 @@ export class GameScene extends Phaser.Scene {
       } else if (this.cursorKeys.right.isDown) {
         marble.body.setAccelerationX(20);
       } else {
-        marble.body.setAccelerationX( (this.gamma / 180) * 100 )
+        marble.body.setAccelerationX( (this.gamma / 180) * 150 )
       }
     }
 

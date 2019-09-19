@@ -21,7 +21,7 @@ export class MenuScene extends Phaser.Scene {
 
     options = [
         'Liesure Game',
-        'Timed Game',
+        //'Timed Game',
         'About'
     ]
     menuOptions: Phaser.GameObjects.Text[] = [];
