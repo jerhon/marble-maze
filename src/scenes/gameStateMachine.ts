@@ -8,12 +8,12 @@ export class GameStateMachine {
 
     constructor(private readonly scene: Phaser.Scene) { }
 
-    startLoading(data: LoadingData) {
+    startLoadingLevel(data: LoadingData) {
         this.scene.scene.stop();
         this.scene.scene.start(LOADING_SCENE, data);
     }
 
-    startGame(data: GameData) {
+    startLevel(data: GameData) {
         this.scene.scene.stop();
         this.scene.scene.start(GAME_SCENE, data);
     }

@@ -14,8 +14,6 @@ export interface Maze {
 
 export interface GameData {
   maze: Maze;
-  level: number;
-  timed: boolean;
 }
 
 export const GAME_SCENE = 'Game';
@@ -211,7 +209,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Moves to the next level. */
   nextLevel() {
-    this.stateMachine.startLoading({timed : this.gameData.timed, level: this.level + 1});
+    this.stateMachine.startLoadingLevel({ });
   }
 
   /** Gets Phaser coordinates relative to the game grid. */
@@ -251,21 +249,8 @@ export class GameScene extends Phaser.Scene {
       this.startTime = time;
     }
 
-    // TODO: add motion of player, and end goal of combining the marbles
-    
     let timeOffset = Math.floor((time - this.startTime) / 1000);
-    let overallTime = this.gameData.timed ? 30 - timeOffset : timeOffset;
-    this.timerText.setText("" + overallTime);
-
-    if (this.gameData.timed) {
-      if (overallTime <= 5) {
-        this.timerText.setColor('0xFF3300');
-      }
-
-      if (overallTime <= 0) {
-        this.stateMachine.startLose();
-      }
-    }
+    this.timerText.setText("" + timeOffset);
   }
 
   /** Update for a single frame. */

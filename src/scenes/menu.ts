@@ -20,7 +20,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     options = [
-        'Liesure Game',
+        'New Game',
         //'Timed Game',
         'About'
     ]
@@ -65,11 +65,11 @@ export class MenuScene extends Phaser.Scene {
     public optionPicked(option: string) {
         console.log('option', option);
         switch (option) {
-            case "Liesure Game":
-                this.stateMachine.startLoading({level:1, timed:false })
+            case "New Game":
+                this.stateMachine.startLoadingLevel({ })
                 break;
             case "Timed Game":
-                this.stateMachine.startLoading({level:1, timed:true })
+                this.stateMachine.startLoadingLevel({ })
                 break;
         }
     }
