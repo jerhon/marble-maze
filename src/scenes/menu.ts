@@ -1,3 +1,4 @@
+import { GameStateMachine } from "./gameStateMachine";
 
 export const MENU_SCENE = 'Menu';
 
@@ -9,10 +10,13 @@ const menuConfig : Phaser.Types.Scenes.SettingsConfig = {
 
 export class MenuScene extends Phaser.Scene {
 
+    private stateMachine: GameStateMachine;
     currentOption = 0;
 
     constructor() {
       super(menuConfig);  
+
+      this.stateMachine = new GameStateMachine(this);
     }
 
     options = [
@@ -62,10 +66,10 @@ export class MenuScene extends Phaser.Scene {
         console.log('option', option);
         switch (option) {
             case "Liesure Game":
-                this.scene.start("Loading", { level: 1 });
+                this.stateMachine.startLoading({level:1, timed:false })
                 break;
             case "Timed Game":
-                this.scene.start("Loading", {level: 1, timed: true});
+                this.stateMachine.startLoading({level:1, timed:true })
                 break;
         }
     }

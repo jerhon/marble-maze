@@ -28,12 +28,14 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
 
 export const game = new Phaser.Game(gameConfig);
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js').then(registration => {
-          console.log('SW registered: ', registration);
-      }).catch(registrationError => {
-          console.log('SW registration failed: ', registrationError);
-      });
-  });
+if (window.location.href.indexOf('mode=pwa') >= 0) {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+            console.log('SW registered: ', registration);
+        }).catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+        });
+    });
+  }
 }

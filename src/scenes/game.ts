@@ -1,4 +1,3 @@
-import { Physics } from "phaser";
 import { GameStateMachine } from "./gameStateMachine";
 
 
@@ -77,6 +76,9 @@ export class GameScene extends Phaser.Scene {
   }
   
 
+  public preload() {
+    this.load.image('wall', 'assets/wall.jpg' );
+  }
 
   public create(data: GameData) {
 
@@ -106,7 +108,7 @@ export class GameScene extends Phaser.Scene {
     this.marble1 = this.createMarble(startCoords.x, startCoords.y);
     this.endSquare = this.createEndSquare(endCoords.x, endCoords.y);
 
-    this.physics.add.collider([this.marble1, this.endSquare], this.walls);
+    this.physics.add.collider(this.marble1, this.walls);
     let gameEndCollider = this.physics.add.overlap(this.marble1, this.endSquare, this.nextLevel.bind(this));
 
     
@@ -164,7 +166,19 @@ export class GameScene extends Phaser.Scene {
       for (let x = 0; x < maze.map[y].length; x++) {
         if (maze.map[y][x] === 'X') {
           var coords = this.getCoordinates({x, y});
-          this.walls.add(this.add.rectangle(coords.x, coords.y, this.wallDim.width, this.wallDim.height, 0xFFFFFF));
+          let wall = this.physics.add.staticImage(coords.x, coords.y, 'wall');
+          
+          // This was super tricky to get right, the image doesn't enable the body, and setting the display size
+          // doesn't alter the size of the body on the static image.
+          wall.setDisplaySize(this.wallDim.width, this.wallDim.height);
+          wall.enableBody(true, coords.x, coords.y, true, true);
+          wall.body.setSize(this.wallDim.width, this.wallDim.height);
+          //wall.body.setSize(this.wallDim.width, this.wallDim.height);
+          //wall.setDisplayOrigin(coords.x, coords.y);
+          //wall.body.setOffset(0, 0);
+          wall.body.immovable = true;
+          
+          this.walls.add(wall);
         }
       }
     }
@@ -181,11 +195,10 @@ export class GameScene extends Phaser.Scene {
   /** Creates a marble. */
   createMarble(x: number, y: number) : Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body } {
     let marble = this.add.circle(x, y, this.marbleDim.radius, 0xFF0000) as any;
-    let obj = this.physics.add.existing(marble);
-    marble.body.setCollideWorldBounds(true);
-    marble.body.setBounce(0.25, 0.25);
-    marble.body.setDrag(20, 20);
-    let ret = marble as Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body };
+    let ret = this.physics.add.existing(marble) as Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body };
+    ret.body.setCollideWorldBounds(true);
+    ret.body.setBounce(0.4, 0.4);
+    ret.body.setDrag(10, 10);
     ret.body.setCircle(this.marbleDim.radius);
     return ret;
   }

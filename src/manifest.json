@@ -16,6 +16,6 @@
             "sizes": "144x144",
             "type": "image/png"
         }],
-    "start_url": "/",
+    "start_url": "/?mode=pwa",
     "scope": "/"
 }
