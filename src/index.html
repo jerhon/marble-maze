@@ -23,6 +23,58 @@
     <script src="app.bundle.js"></script>
   </head>
   <body>
-    <div id="game-content"></div>
+    <div id="game"></div>
+    <div id="install-required" style="padding: 40px;">
+      <div>
+      This application is meant to be played as a phone app.  To install, click the button below.
+      </div>
+
+      <div style="padding: 20px;">
+        <button id="install-pwa">
+          Install Marble Maze
+        </button>
+      </div>
+      <div id="already-installed" hidden="true">
+        The application is already installed, please run from your phone.
+      </div>
+    </div>
+    <script type="text/javascript">
+    
+      let deferredPrompt;
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                console.log('SW registered: ', registration);
+            }).catch(registrationError => {
+                console.log('SW registration failed: ', registrationError);
+            });
+        });
+
+        if (window.location.href.indexOf('source=pwa') >= 0) { 
+          game.runGame();
+        } else {
+          document.getElementById('game').hidden = true;
+          document.getElementById('install-required').hidden = false;
+
+          window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('before install!');
+            // Stash the event so it can be triggered later.
+            e.preventDefault();
+            deferredPrompt = e;
+            
+          });
+          document.getElementById('install-pwa').addEventListener('click', () => {
+            console.log('install!');
+            if (deferredPrompt) {
+              deferredPrompt.prompt();
+            } else {
+              document.getElementById('already-installed').hidden = false;
+            }
+          });
+        }
+      } else {
+
+      }
+    </script>
   </body>
 </html>

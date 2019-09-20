@@ -26,16 +26,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   disableContextMenu: true,
 };
 
-export const game = new Phaser.Game(gameConfig);
-
-if (window.location.href.indexOf('mode=pwa') >= 0) {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').then(registration => {
-            console.log('SW registered: ', registration);
-        }).catch(registrationError => {
-            console.log('SW registration failed: ', registrationError);
-        });
-    });
-  }
+let game;
+export function runGame() {
+  game = new Phaser.Game(gameConfig);
 }
