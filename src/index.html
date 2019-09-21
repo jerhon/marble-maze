@@ -25,21 +25,55 @@
   <body>
     <div id="game"></div>
     <div id="install-required" style="padding: 40px;">
-      <div>
-      This application is meant to be played as a phone app.  To install, click the button below.
+      <h1>Marble Maze</h1>
+      <p>&copy; 2019 Jeremy Honl</p>
+      <p>See the source on <a href="https://github.com/jerhon/marble-maze">GitHub</a></p>
+      <div class="section">
+        This application is meant to be played as a phone app.  To install, click the button below after agreeing to the terms.
       </div>
 
-      <div style="padding: 20px;">
-        <button id="install-pwa">
+      <div class="section">
+        <p>
+          <a href="/LICENSE.txt">License Terms</a>
+        </p>
+        <p>
+          <input id="license" type="checkbox" onchange="onLicenseAgreed(this.checked)" />
+          <label for="license">I agree to the License Terms.</label>
+        </p>
+        <button id="install-pwa" disabled="true" >
           Install Marble Maze
         </button>
-      </div>
-      <div id="already-installed" hidden="true">
-        The application is already installed, please run from your phone.
       </div>
     </div>
     <script type="text/javascript">
     
+      function runNormal() {
+        game.runGame();
+      }
+      function runInstall() {
+        document.getElementById('game').hidden = true;
+          document.getElementById('install-required').hidden = false;
+
+          window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('before install!');
+            // Stash the event so it can be triggered later.
+            e.preventDefault();
+            deferredPrompt = e;
+            
+          });
+          document.getElementById('install-pwa').addEventListener('click', () => {
+            
+            if (deferredPrompt) {
+              deferredPrompt.prompt();
+            } else {
+              alert("The application is already installed, or your phone does not support running the application");
+            }
+          });
+      }
+      function onLicenseAgreed(checked) {
+        document.getElementById("install-pwa").disabled = !checked;
+      }
+
       let deferredPrompt;
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -51,26 +85,9 @@
         });
 
         if (window.location.href.indexOf('source=pwa') >= 0) { 
-          game.runGame();
+          runNormal();
         } else {
-          document.getElementById('game').hidden = true;
-          document.getElementById('install-required').hidden = false;
-
-          window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('before install!');
-            // Stash the event so it can be triggered later.
-            e.preventDefault();
-            deferredPrompt = e;
-            
-          });
-          document.getElementById('install-pwa').addEventListener('click', () => {
-            console.log('install!');
-            if (deferredPrompt) {
-              deferredPrompt.prompt();
-            } else {
-              document.getElementById('already-installed').hidden = false;
-            }
-          });
+          runInstall();
         }
       } else {
 

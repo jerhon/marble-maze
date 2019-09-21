@@ -1,9 +1,7 @@
 import { GameStateMachine } from "./gameStateMachine";
 
 
-/**
- * This is the data type for the maze service.
- */
+/** This is the data type for the maze service. */
 export interface Maze {
   name: string;
   mazePath: string;
@@ -33,15 +31,11 @@ export class GameScene extends Phaser.Scene {
   private marble1: Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body } ;
   private endSquare: Phaser.GameObjects.Rectangle  & { body : Phaser.Physics.Arcade.Body };
   private walls: Phaser.GameObjects.Group;
-
-  
   private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
-  
+
   private beta: number = 0;
   private gamma: number = 0;
 
-
-  private level: number = 0;
   private startTime: number;
   private timerText: Phaser.GameObjects.Text;
   private gameData: GameData;
@@ -171,9 +165,6 @@ export class GameScene extends Phaser.Scene {
           wall.setDisplaySize(this.wallDim.width, this.wallDim.height);
           wall.enableBody(true, coords.x, coords.y, true, true);
           wall.body.setSize(this.wallDim.width, this.wallDim.height);
-          //wall.body.setSize(this.wallDim.width, this.wallDim.height);
-          //wall.setDisplayOrigin(coords.x, coords.y);
-          //wall.body.setOffset(0, 0);
           wall.body.immovable = true;
           
           this.walls.add(wall);

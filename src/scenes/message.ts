@@ -30,8 +30,5 @@ export class MessageScene extends Phaser.Scene {
             this.scene.start(data.nextScene, data.nextSceneData);
         });
     }
-
-    update() {
-
-    }
+    
 }

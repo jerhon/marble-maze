@@ -1,14 +1,28 @@
-#splashscreen {
-    height: 100vh;
-    width: 100%;
-    background: black;
 
-    font: Roboto;
+body {
+    background-color: black;
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
 
-#splashscreen button {
+#install-pwa {
     border: 1px solid white;
     background: white;
-    border-radius: 20px;
+    border-radius: 3px;
+    padding: 10px;
 }
+
+#install-pwa:hover:enabled {
+    background: darkgray;
+}
+
+#install-pwa:disabled{
+    background: darkgray;
+    color: black;
+}
+
+.section {
+    margin-top: 25px;
+}
+
+
