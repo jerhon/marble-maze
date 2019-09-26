@@ -1,17 +1,8 @@
 import { GameStateMachine } from "./gameStateMachine";
-
-
-/** This is the data type for the maze service. */
-export interface Maze {
-  name: string;
-  mazePath: string;
-  startingPosition: number[];
-  endingPosition: number[];
-  map: string[][];
-}
+import { MazeResponse } from "./loading";
 
 export interface GameData {
-  maze: Maze;
+  maze: MazeResponse;
 }
 
 export const GAME_SCENE = 'Game';
@@ -84,9 +75,7 @@ export class GameScene extends Phaser.Scene {
 
     const maze = this.gameData.maze;
 
-    
     this.input.enabled = true;
-    
     
     // calculate the dimensions for positioning
     this.calculateDimensions(data.maze.map.length);
@@ -103,7 +92,6 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.marble1, this.walls);
     let gameEndCollider = this.physics.add.overlap(this.marble1, this.endSquare, this.nextLevel.bind(this));
 
-    
     this.startTime = 0;
   }
 
@@ -130,14 +118,11 @@ export class GameScene extends Phaser.Scene {
       radius: Math.min( (wallDim / 2) / 2 )
     }
 
-    const y = this.stageDim.height + this.wallDim.height;
-    const x = this.stageDim.width + this.wallDim.width;
-
     if (this.game.canvas.height > this.game.canvas.width) {
       this.openDim = {
         x: 0,
-        y: this.stageDim.height + this.wallDim.height,
-        height: this.game.canvas.height - y,
+        y: this.stageDim.height,
+        height: this.game.canvas.height - this.stageDim.height,
         width: this.game.canvas.width
       }
     } else {
@@ -145,18 +130,18 @@ export class GameScene extends Phaser.Scene {
         x: this.stageDim.width + this.wallDim.width,
         y: 0,
         height: this.game.canvas.height,
-        width: this.game.canvas.width - x
+        width: this.game.canvas.width - this.stageDim.width
       }
     }
-    
   }
 
   /** Creates the walls for the game. */
-  createWalls(maze: Maze) {
+  createWalls(maze: MazeResponse) {
     this.walls = this.physics.add.staticGroup();
     for (let y = 0; y < maze.map.length; y++) {
       for (let x = 0; x < maze.map[y].length; x++) {
-        if (maze.map[y][x] === 'X') {
+        let c = maze.map[y][x];
+        if (c != ' ' && c != 'A') {
           var coords = this.getCoordinates({x, y});
           let wall = this.physics.add.staticImage(coords.x, coords.y, 'wall');
           
@@ -171,14 +156,11 @@ export class GameScene extends Phaser.Scene {
         }
       }
     }
-    this.walls.add(this.add.rectangle(this.stageDim.centerX, this.stageDim.height + this.wallDim.offsetY, this.stageDim.width, this.wallDim.height, 0xFFFFFF));
-    this.walls.add(this.add.rectangle(this.stageDim.width + this.wallDim.offsetX, this.stageDim.centerY, this.wallDim.width, this.stageDim.height, 0xFFFFFF));
   }
 
   /** Creates the aside section of the game. */
   createAside() {
     this.timerText = this.add.text(this.openDim.x + 20, this.openDim.y + 20, "");
-    
   }
 
   /** Creates a marble. */
@@ -220,7 +202,6 @@ export class GameScene extends Phaser.Scene {
         marble.body.setAccelerationY(-20);
       } else {
         marble.body.setAccelerationY( (this.beta / 180) * 150 );
-        ;
       } 
       
       if (this.cursorKeys.left.isDown) {
