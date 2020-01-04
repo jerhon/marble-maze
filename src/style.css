@@ -25,4 +25,9 @@ body {
     margin-top: 25px;
 }
 
-
+a {
+    color: white;
+}
+a:visited {
+    color: white;
+}
