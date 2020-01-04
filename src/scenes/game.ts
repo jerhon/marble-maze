@@ -84,8 +84,8 @@ export class GameScene extends Phaser.Scene {
     this.createWalls(maze);
     this.createAside();   
 
-    let startCoords = this.getCoordinates({x: maze.startingPosition[0], y: maze.startingPosition[1]});
-    let endCoords = this.getCoordinates({x: maze.endingPosition[0], y: maze.endingPosition[1]});
+    let startCoords = this.getCoordinates({x: maze.startingPosition[0]+1, y: maze.startingPosition[1]+1});
+    let endCoords = this.getCoordinates({x: maze.endingPosition[0]+1, y: maze.endingPosition[1]+1});
     this.marble1 = this.createMarble(startCoords.x, startCoords.y);
     this.endSquare = this.createEndSquare(endCoords.x, endCoords.y);
 
@@ -187,10 +187,13 @@ export class GameScene extends Phaser.Scene {
 
   /** Gets Phaser coordinates relative to the game grid. */
   getCoordinates(p: Point): Point {
-    return { 
-        x: p.x * this.wallDim.width + this.wallDim.offsetX, 
-        y: p.y * this.wallDim.height + this.wallDim.offsetY 
+    console.log('data: ', p.x, p.y, this.wallDim);
+    const ret = { 
+        x: (p.x ) * this.wallDim.width + this.wallDim.offsetX, 
+        y: (p.y ) * this.wallDim.height + this.wallDim.offsetY
       }
+    console.log(ret);
+    return ret;
   }
 
   /** Update the motion of objects when a frame tick occurs. */
