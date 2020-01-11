@@ -19,8 +19,6 @@ module.exports = {
     ]
   },
 
-  devtool: 'inline-source-map',
-
   resolve: {
     extensions: [ '.ts', '.tsx', '.js' ]
   },
@@ -30,13 +28,6 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'var',
     library: 'game'
-  },
-
-  mode: 'development',
-
-  devServer: {
-    contentBase: path.resolve(__dirname, 'dist'),
-    https: false
   },
 
   plugins: [

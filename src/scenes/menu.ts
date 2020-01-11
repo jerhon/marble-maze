@@ -57,9 +57,8 @@ export class MenuScene extends Phaser.Scene {
         }
         top += 50;
 
-        var directions = this.add.text(25, top, 'Lead the marble through the maze.  Hold the phone flat in relation to the ground. Tilt your phone to move the marble through the phase.');
+        var directions = this.add.text(25, top, 'Lead the marble through the maze.  Hold the phone flat in relation to the ground. Tilt your phone to move the marble through the maze.');
         directions.setWordWrapWidth(this.game.canvas.width - 50, true);
-
     }
 
     public optionPicked(option: string) {

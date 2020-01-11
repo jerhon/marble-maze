@@ -12,8 +12,7 @@
     <link rel="icon" type="image/png" href="assets/icon.png" >
     <style>
       html,
-      body,
-      canvas {
+      body {
         margin: 0 !important;
         padding: 0 !important;
         overflow: hidden !important;
@@ -24,74 +23,44 @@
   </head>
   <body>
     <div id="game"></div>
-    <div id="install-required" style="padding: 40px;">
+    <div id="play-options" style="padding: 40px;">
       <h1>Marble Maze</h1>
       <p>&copy; 2019 Jeremy Honl</p>
       <p>See the source on <a href="https://github.com/jerhon/marble-maze">GitHub</a></p>
-      <div class="section">
-        This application is meant to be played as a phone app.  To install, click the button below after agreeing to the terms.
-      </div>
 
       <div class="section">
         <p>
           <a href="/LICENSE.txt">License Terms</a>
         </p>
         <p>
-          <input id="license" type="checkbox" onchange="onLicenseAgreed(this.checked)" />
+          <input id="license" type="checkbox" />
           <label for="license">I agree to the License Terms.</label>
         </p>
-        <button id="install-pwa" disabled="true" >
-          Install Marble Maze
-        </button>
+        <br />
+
+        <div id="pwa" style="display: none;">
+          <p>Your platform supports installing this game as an application.</p>
+          <button id="install-pwa" disabled="true" >
+            Install Marble Maze as Application
+          </button>
+        </div>
+        <div id="no-pwa">
+          <p>Your platform does not support installing this game as an application.</p>
+        </div>
+        <br />
+
+        <div id="fullscreen">
+          <button id="play-game" disabled="true" style="width: 300px;" >
+            Play Game
+          </button>
+        </div>
+        
       </div>
     </div>
-    <script type="text/javascript">
-    
-      function runNormal() {
-        game.runGame();
-      }
-      function runInstall() {
-        document.getElementById('game').hidden = true;
-          document.getElementById('install-required').hidden = false;
 
-          window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('before install!');
-            // Stash the event so it can be triggered later.
-            e.preventDefault();
-            deferredPrompt = e;
-            
-          });
-          document.getElementById('install-pwa').addEventListener('click', () => {
-            
-            if (deferredPrompt) {
-              deferredPrompt.prompt();
-            } else {
-              alert("The application is already installed, or your phone does not support running the application");
-            }
-          });
-      }
-      function onLicenseAgreed(checked) {
-        document.getElementById("install-pwa").disabled = !checked;
-      }
-
-      let deferredPrompt;
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                console.log('SW registered: ', registration);
-            }).catch(registrationError => {
-                console.log('SW registration failed: ', registrationError);
-            });
-        });
-
-        if (window.location.href.indexOf('source=pwa') >= 0) { 
-          runNormal();
-        } else {
-          runInstall();
-        }
-      } else {
-
-      }
-    </script>
   </body>
+
+  <script type="text/javascript">
+    game.startLandingPage();
+  </script>
 </html>

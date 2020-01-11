@@ -3,30 +3,42 @@ import { GameScene } from './scenes/game';
 import { LoadingScene } from './scenes/loading';
 import { MenuScene } from './scenes/menu';
 import { MESSAGE_SCENE, MessageScene } from './scenes/message';
+import { LandingPage } from './landingPage';
 
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
-  title: 'Sample',
+  title: 'Marble Maze',
  
   type: Phaser.AUTO,
  
-  width: window.innerWidth,
-  height: window.innerHeight,
-   
   physics: {
     default: 'arcade',
     //arcade: {
     //  debug: true,
     //},
   },
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
+  },
+
+  height: 800,
+  width: 700,
   
   scene: [MenuScene, LoadingScene, GameScene, MessageScene],
   parent: 'game',
   backgroundColor: '#000000',
   disableContextMenu: true,
+
+  render: {
+    roundPixels: true
+  }
 };
 
 let game;
-export function runGame() {
-  game = new Phaser.Game(gameConfig);
+export function startLandingPage() {
+  var landingPage = new LandingPage(
+    () =>  new Phaser.Game(gameConfig)
+  );
+  landingPage.init();
 }

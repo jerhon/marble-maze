@@ -5,18 +5,18 @@ body {
     color: white;
 }
 
-#install-pwa {
+button {
     border: 1px solid white;
     background: white;
     border-radius: 3px;
     padding: 10px;
 }
 
-#install-pwa:hover:enabled {
+button:hover:enabled {
     background: darkgray;
 }
 
-#install-pwa:disabled{
+button:disabled{
     background: darkgray;
     color: black;
 }

@@ -1,7 +1,7 @@
 {
-  "name": "honlsoft-maze-marbles",
+  "name": "marble-maze",
   "version": "1.0.0",
-  "description": "A simple maze game using the gyroscope on a phone.  Combine the two marbles to win the level.",
+  "description": "A simple maze game using the gyroscope on a phone.  Get the marble to the end to win!",
   "main": "index.js",
   "dependencies": {
     "phaser": "^3.19.0"
@@ -13,12 +13,13 @@
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.10.1",
+    "webpack-merge": "^4.2.2",
     "workbox-webpack-plugin": "^4.3.1"
   },
   "scripts": {
-    "start:dev": "webpack-dev-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "build": "webpack-dev-server --config webpack.prod.js"
   },
-  "author": "",
+  "author": "Jeremy Honl",
   "license": "MIT"
 }
