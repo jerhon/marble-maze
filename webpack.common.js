@@ -2,11 +2,20 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
+const gitRevisionPlugin = new GitRevisionPlugin()
+
+
 
 module.exports = {
   entry: {
     app: './src/main.ts',
     vendors: ['phaser']
+  },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    library: 'game'
   },
 
   module: {
@@ -21,13 +30,6 @@ module.exports = {
 
   resolve: {
     extensions: [ '.ts', '.tsx', '.js' ]
-  },
-
-  output: {
-    filename: 'app.bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'var',
-    library: 'game'
   },
 
   plugins: [
@@ -59,19 +61,8 @@ module.exports = {
     }),
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
-      skipWaiting: true
+      skipWaiting: true,
+      cacheId: gitRevisionPlugin.commithash() // based on the version of the application, especially usefull for builds
     })
-  ],
-
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all'
-        }
-      }
-    }
-  }
+  ]
 };

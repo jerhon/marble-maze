@@ -18,7 +18,7 @@
         overflow: hidden !important;
       }
     </style>
-    <script src="vendors.app.bundle.js"></script>
+    <script src="vendors.bundle.js"></script>
     <script src="app.bundle.js"></script>
   </head>
   <body>
@@ -58,9 +58,10 @@
       </div>
     </div>
 
+    <script type="text/javascript">
+      window.onload = () => {
+        game.start();
+      };
+    </script>
   </body>
-
-  <script type="text/javascript">
-    game.startLandingPage();
-  </script>
 </html>
