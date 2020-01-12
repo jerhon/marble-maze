@@ -1,5 +1,3 @@
-import { maxHeaderSize } from "http";
-
 export const LOADING_SCENE = 'Loading';
 
 /** This is the data type for the maze service. */

@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 import { GameScene } from './scenes/game';
 import { LoadingScene } from './scenes/loading';
 import { MenuScene } from './scenes/menu';
-import { MESSAGE_SCENE, MessageScene } from './scenes/message';
+import { MessageScene } from './scenes/message';
 import { LandingPage } from './landingPage';
 
 

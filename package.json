@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",
-    "build": "webpack-dev-server --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js"
   },
   "author": "Jeremy Honl",
   "license": "MIT"
