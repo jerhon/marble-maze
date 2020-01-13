@@ -187,12 +187,10 @@ export class GameScene extends Phaser.Scene {
 
   /** Gets Phaser coordinates relative to the game grid. */
   getCoordinates(p: Point): Point {
-    console.log('data: ', p.x, p.y, this.wallDim);
     const ret = { 
         x: (p.x ) * this.wallDim.width + this.wallDim.offsetX, 
         y: (p.y ) * this.wallDim.height + this.wallDim.offsetY
       }
-    console.log(ret);
     return ret;
   }
 

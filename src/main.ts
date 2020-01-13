@@ -47,7 +47,8 @@ class LandingPage {
       this.hideMenu();
       this.showGame();
 
-      this.action(); 
+      let game = this.action(); 
+      game.scale.lockOrientation('portrait');
   }
   
 
@@ -79,7 +80,6 @@ class LandingPage {
       });
       document.getElementById('license').addEventListener('change', (evt) => {
           var checked = (document.getElementById('license') as HTMLInputElement).checked;
-          console.log(checked);
           this.licenseAgreed(checked);
       })
 
@@ -105,8 +105,8 @@ class LandingPage {
   }
 
   showPwaEnabled() {
-      document.getElementById('pwa').hidden = true;
-      document.getElementById('no-pwa').hidden = false;
+      document.getElementById('pwa').hidden = false;
+      document.getElementById('no-pwa').hidden = true;
   }
 
   licenseAgreed(checked) {
