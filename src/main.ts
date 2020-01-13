@@ -83,7 +83,7 @@ class LandingPage {
           this.licenseAgreed(checked);
       })
 
-      if (window.location.href.includes('mode=game')) {
+      if (window.location.href.includes('mode=pwa')) {
           this.runGame();
       } else {
           this.runMenu();
