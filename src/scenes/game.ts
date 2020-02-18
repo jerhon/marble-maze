@@ -168,9 +168,8 @@ export class GameScene extends Phaser.Scene {
     let marble = this.add.circle(x, y, this.marbleDim.radius, 0xFF0000) as any;
     let ret = this.physics.add.existing(marble) as Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body };
     ret.body.setCollideWorldBounds(true);
-    ret.body.setBounce(0.4, 0.4);
+    ret.body.setBounce(0.5, 0.5);
     ret.body.setDrag(10, 10);
-    ret.body.setCircle(this.marbleDim.radius);
     return ret;
   }
 

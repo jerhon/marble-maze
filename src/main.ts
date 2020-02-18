@@ -12,9 +12,12 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
  
   physics: {
     default: 'arcade',
-    //arcade: {
-    //  debug: true,
-    //},
+    arcade: {
+      overlapBias: 0,
+      tileBias: 0
+      // ,
+      // debug: true,
+    },
   },
   scale: {
     mode: Phaser.Scale.FIT,
