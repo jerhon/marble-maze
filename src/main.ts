@@ -13,8 +13,8 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   physics: {
     default: 'arcade',
     arcade: {
-      overlapBias: 0,
-      tileBias: 0
+      overlapBias: 4,
+      tileBias: 4
       // ,
       // debug: true,
     },
@@ -22,50 +22,28 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
+    fullscreenTarget: 'game',
   },
 
-  height: 800,
-  width: 700,
+  height: 704,
+  width: 704,
   
   scene: [MenuScene, LoadingScene, GameScene, MessageScene],
   parent: 'game',
   backgroundColor: '#000000',
   disableContextMenu: true,
 
-  render: {
-    roundPixels: true
-  }
 };
 
 let deferredPrompt;
 class LandingPage {
 
-  constructor(private action: () => Phaser.Game) { }
-
-  runMenu() {
-      this.showMenu();
-      this.hideGame();
-  }
-  runGame() {
-      this.hideMenu();
-      this.showGame();
-
-      let game = this.action(); 
-      game.scale.lockOrientation('portrait');
-  }
+  constructor() { }
   
 
   init() {
-      if (process.env.NODE_ENV === 'prod') {
-          if ('serviceWorker' in navigator) {
-              window.addEventListener('load', () => {
-                  navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                      console.log('SW registered: ', registration);
-                  }).catch(registrationError => {
-                      console.log('SW registration failed: ', registrationError);
-                  });
-              });  
-          }
+      if (process.env.NODE_ENV === 'prod' || true) {
+          serviceWorker();
 
           window.addEventListener('beforeinstallprompt', (e) => {
               // Stash the event so it can be triggered later.
@@ -78,38 +56,15 @@ class LandingPage {
       document.getElementById('install-pwa').addEventListener('click', (evt) => {
           deferredPrompt();
       });
-      document.getElementById('play-game').addEventListener('click', (evt) => {
-          this.runGame();
-      });
       document.getElementById('license').addEventListener('change', (evt) => {
           var checked = (document.getElementById('license') as HTMLInputElement).checked;
           this.licenseAgreed(checked);
       })
 
-      if (window.location.href.includes('mode=pwa')) {
-          this.runGame();
-      } else {
-          this.runMenu();
-      }
-  }
-
-  hideGame() {
-      document.getElementById('game').hidden = true;
-  }
-  showGame() {
-      document.getElementById('game').hidden = false;
-  }
-
-  hideMenu() {
-      document.getElementById('play-options').hidden = true;
-  }
-  showMenu() {
-      document.getElementById('play-options').hidden = false;
   }
 
   showPwaEnabled() {
       document.getElementById('pwa').hidden = false;
-      document.getElementById('no-pwa').hidden = true;
   }
 
   licenseAgreed(checked) {
@@ -122,9 +77,23 @@ class LandingPage {
   }
 }
 
-export function start() {
-  var landingPage = new LandingPage(
-    () =>  new Phaser.Game(gameConfig)
-  );
+function serviceWorker() {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+            console.log('SW registered: ', registration);
+        }).catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+        });
+    });  
+}
+}
+
+export function landingPage() {
+  var landingPage = new LandingPage();
   landingPage.init();
+}
+
+export function start() {
+  let g =  new Phaser.Game(gameConfig);
 }

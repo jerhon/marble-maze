@@ -27,8 +27,11 @@ export class MenuScene extends Phaser.Scene {
 
     public create() {
         let top = 0;
-        this.add.text(25, 25, 'Marble Maze', { fontSize: '50px' });
-        top += 85;
+        let title = this.add.text(25, 25, 'Marble Maze', { fontSize: '50px', align: 'center' });
+        title.setWordWrapWidth(this.game.canvas.width - 20, true);
+        title.setFixedSize(this.game.canvas.width - 20, 0);
+
+        top += 100;
         top += 50;
 
         let idx = 0;
@@ -57,17 +60,18 @@ export class MenuScene extends Phaser.Scene {
         }
         top += 50;
 
-        var directions = this.add.text(25, top, 'Lead the marble through the maze.  Hold the phone flat in relation to the ground. Tilt your phone to move the marble through the maze.');
+        var directions = this.add.text(25, top, 'Lead the marble through the maze.  Hold the phone flat in relation to the ground. Tilt your phone to move the marble through the maze. If your using a browser, use the arrow keys.', { fontSize: '30px' });
         directions.setWordWrapWidth(this.game.canvas.width - 50, true);
     }
 
     public optionPicked(option: string) {
         switch (option) {
             case "New Game":
-                this.stateMachine.startLoadingLevel({})
+                this.stateMachine.startLoadingLevel({});
+                //this.scale.startFullscreen()
                 break;
             case "Timed Game":
-                this.stateMachine.startLoadingLevel({})
+                this.stateMachine.startLoadingLevel({});
                 break;
         }
     }

@@ -35,8 +35,9 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, 'src/index.html'),
-        to: path.resolve(__dirname, 'dist')
+        from: path.resolve(__dirname, 'src', '*.html'),
+        to: path.resolve(__dirname, 'dist'),
+        flatten: true
       },
       {
         from: path.resolve(__dirname, 'assets', '**', '*'),

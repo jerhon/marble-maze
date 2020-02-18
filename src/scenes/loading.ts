@@ -49,27 +49,5 @@ export class LoadingScene extends Phaser.Scene {
     return maze;
   }
 
-  augmentSprites(maze: string[][]) {
-    for (let y = 0; y < maze.length; y++) {
-      for (let x = 0; x < maze[0].length; x++) {
-        if (maze[y][x] == 'X') {
-          if (y > 0 && maze[y - 1][x] == 'X') {
-            maze[y][x] = 'N';
-          }
-          if (y < maze.length - 1 && maze[y + 1][x] == 'X') {
-            maze[y][x] = maze[y][x].concat('S');
-          }
-          if (x > 0 && maze[y][x - 1] == 'X') {
-            maze[y][x] = maze[y][x].concat('W');
-          }
-          if (x < maze.length - 1 && maze[y][x + 1] == 'X') {
-            maze[y][x] = maze[y][x].concat('E');
-          }
-        }
-        if (maze[y][x].startsWith('X') && maze[y][x].length > 1) {
-          maze[y][x] = maze[y][x].substr(1);
-        }
-      }
-    }
-  }
+  
 }
