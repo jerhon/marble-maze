@@ -68,7 +68,7 @@ export class GameScene extends Phaser.Scene {
     this.marble1 = this.createMarble();
     this.endSquare = this.createEndSquare();
 
-    this.physics.add.collider(this.marble1, this.walls);
+    let marbleCollider = this.physics.add.collider(this.marble1, this.walls);
     let gameEndCollider = this.physics.add.overlap(this.marble1, this.endSquare, this.nextLevel.bind(this));
   }
 
@@ -83,9 +83,13 @@ export class GameScene extends Phaser.Scene {
   createWalls() {
     this.walls = this.physics.add.staticGroup();
     for (let coords of this.maze.getWalls()) {
-      let wall = this.physics.add.staticImage(coords.x, coords.y, 'wall');
+      let wall = this.physics.add.staticSprite(coords.position.x, coords.position.y, 'wall');
       wall.setDisplaySize(this.wallDim, this.wallDim);
-      wall.enableBody(true, coords.x, coords.y, true, true);
+      wall.enableBody(true, coords.position.x, coords.position.y, true, true);
+      wall.body.checkCollision.up = !coords.adjacent.top;
+      wall.body.checkCollision.down = !coords.adjacent.bottom;
+      wall.body.checkCollision.left = !coords.adjacent.left;
+      wall.body.checkCollision.right = !coords.adjacent.right;
       wall.body.setSize(this.wallDim, this.wallDim);
       wall.body.immovable = true;
       
@@ -118,6 +122,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Update the motion of objects when a frame tick occurs. */
   updateMotion() {
+
     for (let marble of [this.marble1]) {
       if (this.cursorKeys.down.isDown) {
         marble.body.setAccelerationY(20);

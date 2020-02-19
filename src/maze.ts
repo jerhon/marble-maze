@@ -1,13 +1,21 @@
 import * as _ from 'underscore';
+import { RIGHT } from 'phaser';
 
-interface Dimension {
+interface Position {
     x: number;
     y: number;
 }
 
+interface Adjacent {
+    top: boolean;
+    bottom: boolean;
+    left: boolean;
+    right: boolean;
+}
+
 interface MazeTile {
-    x: number;
-    y: number;
+    position: Position;
+    adjacent: Adjacent;
     type: string;
 }
 
@@ -22,8 +30,8 @@ export interface MazeResponse {
 
 export class Maze {
 
-    startingPosition: MazeTile;
-    endingPosition: MazeTile;
+    startingPosition: Position;
+    endingPosition: Position;
 
     public constructor(
         private map: string[][],
@@ -33,9 +41,23 @@ export class Maze {
         private offsetX: number,
         private offsetY: number) {
             
-            this.startingPosition = { x: startingPosition[0]+1, y: startingPosition[1]+1, type: 'S' };
-            this.endingPosition = { x: endingPosition[0]+1, y: endingPosition[1]+1, type: 'E' };
+            this.startingPosition = { x: startingPosition[0]+1, y: startingPosition[1]+1 };
+            this.endingPosition = { x: endingPosition[0]+1, y: endingPosition[1]+1 };
 
+    }
+
+    hasTile(x: number, y: number) {
+        if ( x < 0 )
+            return false;
+        if ( y < 0 )
+            return false;
+
+        if (y >= this.map.length)
+            return false;
+        if (x >= this.map[y].length)
+            return false;
+
+        return this.map[y][x] == 'X';
     }
 
     getTiles(): MazeTile[] {
@@ -43,8 +65,7 @@ export class Maze {
         let spaces = this.map.map(
             (a, y) => a.map(
                 (b, x) => ({ 
-                    x,
-                    y, 
+                    position: { x, y }, 
                     type: b
                 })
             )
@@ -53,13 +74,23 @@ export class Maze {
         return _.flatten(spaces) as MazeTile[];
     }
 
-    getWalls(): Dimension[] {
+    getWalls(): MazeTile[] {
         return this.getTiles()
             .filter((t) => t.type == 'X')
-            .map((t) => this.getTilePosition(t, this.wallSize, this.offsetX, this.offsetY));
+            .map((t) => 
+                ({
+                    position: this.getTilePosition(t.position, this.wallSize, this.offsetX, this.offsetY),
+                    adjacent: {
+                        top: this.hasTile(t.position.x, t.position.y - 1),
+                        left: this.hasTile(t.position.x-1, t.position.y),
+                        right: this.hasTile(t.position.x+1, t.position.y),
+                        bottom: this.hasTile(t.position.x, t.position.y +1)
+                    },
+                    type: t.type
+                }));
     }
 
-    getTilePosition(space: MazeTile, size: number, offsetX: number, offsetY: number): Dimension {
+    getTilePosition(space: Position, size: number, offsetX: number, offsetY: number): Position {
         return this.getCenterPosition(space.x, space.y, size, offsetX, offsetY);
     }
 
