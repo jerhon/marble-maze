@@ -14,11 +14,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
     key: GAME_SCENE,
 };
 
-interface Point {
-  x: number;
-  y: number;
-}
-
 export class GameScene extends Phaser.Scene {
   private marble1: Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body } ;
   private endSquare: Phaser.GameObjects.Rectangle  & { body : Phaser.Physics.Arcade.Body };
@@ -31,15 +26,17 @@ export class GameScene extends Phaser.Scene {
   private gameData: GameData;
   private stateMachine: GameStateMachine;
 
+  private stageDim : number;
+  private wallDim : number;
+  private marbleRadius : number;
+  private pointer: Phaser.Input.Pointer;
+
   maze: Maze;
 
   constructor() {
     super(sceneConfig);
   }
 
-  private stageDim : number;
-  private wallDim : number;
-  private marbleRadius : number;
 
   public preload() {
     this.load.image('wall', 'assets/wall.jpg' );
@@ -54,6 +51,7 @@ export class GameScene extends Phaser.Scene {
     };
 
     this.cursorKeys = this.input.keyboard.createCursorKeys()
+    this.pointer = this.input.pointer1;
 
     this.input.enabled = true;
     
@@ -103,8 +101,8 @@ export class GameScene extends Phaser.Scene {
     let marble = this.add.circle(x, y, this.marbleRadius, 0xFF0000) as any;
     let ret = this.physics.add.existing(marble) as Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body };
     ret.body.setCollideWorldBounds(true);
-    ret.body.setBounce(0.5, 0.5);
-    ret.body.setDrag(10, 10);
+    ret.body.setBounce(0.6, 0.6);
+    ret.body.setDrag(5, 5);
     return ret;
   }
 
@@ -124,21 +122,14 @@ export class GameScene extends Phaser.Scene {
   updateMotion() {
 
     for (let marble of [this.marble1]) {
-      if (this.cursorKeys.down.isDown) {
-        marble.body.setAccelerationY(20);
-      } else if (this.cursorKeys.up.isDown) {
-        marble.body.setAccelerationY(-20);
+      if (this.pointer.isDown) {
+        let halfStage = this.stageDim / 2;
+        marble.body.setAccelerationY( ( halfStage - this.pointer.y) / halfStage * -100  );
+        marble.body.setAccelerationX( ( halfStage - this.pointer.x) / halfStage * -100  );
       } else {
-        marble.body.setAccelerationY( (this.beta / 180) * 150 );
-      } 
-      
-      if (this.cursorKeys.left.isDown) {
-        marble.body.setAccelerationX(-20);
-      } else if (this.cursorKeys.right.isDown) {
-        marble.body.setAccelerationX(20);
-      } else {
+        marble.body.setAccelerationY( (this.beta / 180) * 150 );  
         marble.body.setAccelerationX( (this.gamma / 180) * 150 )
-      }
+      } 
     }
   }
   

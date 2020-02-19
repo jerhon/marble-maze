@@ -1,5 +1,4 @@
 import * as _ from 'underscore';
-import { RIGHT } from 'phaser';
 
 interface Position {
     x: number;
@@ -41,8 +40,15 @@ export class Maze {
         private offsetX: number,
         private offsetY: number) {
             
-            this.startingPosition = { x: startingPosition[0]+1, y: startingPosition[1]+1 };
-            this.endingPosition = { x: endingPosition[0]+1, y: endingPosition[1]+1 };
+            this.startingPosition = { 
+                x: startingPosition[0]+1,
+                y: startingPosition[1]+1
+            };
+
+            this.endingPosition = { 
+                x: endingPosition[0]+1,
+                y: endingPosition[1]+1
+            };
 
     }
 
@@ -99,7 +105,7 @@ export class Maze {
     }
 
     getEndPosition() {
-        return this.getCenterPosition(this.endingPosition.x, this.startingPosition.y, this.wallSize, this.offsetX, this.offsetY);
+        return this.getCenterPosition(this.endingPosition.x, this.endingPosition.y, this.wallSize, this.offsetX, this.offsetY);
     }
 
     getHeight() {
@@ -112,8 +118,8 @@ export class Maze {
 
     getCenterPosition(x: number, y: number, tileSize: number, offsetX: number, offsetY: number) {
         return {
-            x: x * tileSize + (tileSize / 2) + offsetX,
-            y: y * tileSize + (tileSize / 2) + offsetY
+            x: (x * tileSize) + (tileSize / 2) + offsetX,
+            y: (y * tileSize) + (tileSize / 2) + offsetY
         };
     }
 
