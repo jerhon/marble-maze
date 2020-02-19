@@ -33,64 +33,51 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
 };
 
 let deferredPrompt;
-class LandingPage {
 
-  constructor() { }
-  
-
-  init() {
-      if (process.env.NODE_ENV === 'prod' || true) {
-          serviceWorker();
-
-          window.addEventListener('beforeinstallprompt', (e) => {
-              // Stash the event so it can be triggered later.
-              e.preventDefault();
-              deferredPrompt = e;
-              this.showPwaEnabled();
+export function serviceWorker() {
+  if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js').then(registration => {
+              console.log('SW registered: ', registration);
+          }).catch(registrationError => {
+              console.log('SW registration failed: ', registrationError);
           });
-      }
+      });  
+  }
+}
 
-      document.getElementById('install-pwa').addEventListener('click', (evt) => {
-          deferredPrompt();
-      });
-      document.getElementById('license').addEventListener('change', (evt) => {
-          var checked = (document.getElementById('license') as HTMLInputElement).checked;
-          this.licenseAgreed(checked);
-      })
+export function index() {
+  if (process.env.NODE_ENV === 'prod' || true) {
+    serviceWorker();
 
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Stash the event so it can be triggered later.
+        e.preventDefault();
+        deferredPrompt = e;
+        document.getElementById('pwa').hidden = false;
+    });
   }
 
-  showPwaEnabled() {
-      document.getElementById('pwa').hidden = false;
-  }
+  document.getElementById('install-pwa').addEventListener('click', (evt) => {
+      deferredPrompt.prompt();
+  });
 
-  licenseAgreed(checked) {
+  document.getElementById('license').addEventListener('change', (evt) => {
+      const checked = (document.getElementById('license') as HTMLInputElement).checked;
+
       (document.getElementById("install-pwa") as HTMLButtonElement).disabled = !checked;
       (document.getElementById("play-game") as HTMLButtonElement).disabled = !checked;
+  });
+
+  document.getElementById('play-game').addEventListener('click', (evt) => {
+    document.location.href = "/game.html";
+  });
+}
+
+export function game() {
+  
+  if (process.env.NODE_ENV === 'prod' || true) {
+    serviceWorker();  
+    let g =  new Phaser.Game(gameConfig);
   }
-
-  installPwa() {
-      deferredPrompt.prompt();
-  }
-}
-
-function serviceWorker() {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').then(registration => {
-            console.log('SW registered: ', registration);
-        }).catch(registrationError => {
-            console.log('SW registration failed: ', registrationError);
-        });
-    });  
-}
-}
-
-export function landingPage() {
-  var landingPage = new LandingPage();
-  landingPage.init();
-}
-
-export function start() {
-  let g =  new Phaser.Game(gameConfig);
 }

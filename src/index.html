@@ -25,7 +25,7 @@
     <div id="game"></div>
     <div id="play-options" style="padding: 40px;">
       <h1>Marble Maze</h1>
-      <p>&copy; 2019 Jeremy Honl</p>
+      <p>&copy; 2020 Jeremy Honl</p>
       <p>See the source on <a href="https://github.com/jerhon/marble-maze">GitHub</a></p>
 
       <div class="section">
@@ -39,15 +39,15 @@
         <br />
         <div id="pwa" hidden="true">
           <p>Your platform supports installing this game as an application.</p>
-          <button id="install-pwa" class="button" disabled="true" >
-            Install Marble Maze as Application
+          <button id="install-pwa" class="button" id="install-pwa" disabled="true" >
+            Install as Application
           </button>
         </div>
         <br />
         <br />
         <div id="fullscreen">
           <p>Play the game in your browser.</p>
-          <a href="/game.html" class="button" disabled="true" >
+          <button id="play-game" class="button" disabled="true" >
             Play Game
           </a>
         </div>
@@ -55,8 +55,9 @@
       </div>
     </div>
 
+    
     <script type="text/javascript">
-      game.start();
+      game.index();
     </script>
   </body>
 </html>

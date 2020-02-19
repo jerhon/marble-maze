@@ -16,5 +16,5 @@
         "sizes": "144x144",
         "type": "image/png"
     }],
-    "start_url": "/game.html"
+    "start_url": "/game.html?mode=pwa"
 }
