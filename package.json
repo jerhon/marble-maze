@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "phaser": "^3.22.0",
-    "underscore": "^1.9.2"
+    "underscore": "^1.12.1"
   },
   "devDependencies": {
     "@types/chai": "^4.2.9",
