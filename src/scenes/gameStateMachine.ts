@@ -2,6 +2,8 @@ import { GameData, GAME_SCENE } from "./game";
 import { MessageData, MESSAGE_SCENE } from "./message";
 import { LoadingData, LOADING_SCENE } from "./loading";
 import { MENU_SCENE } from "./menu";
+import Phaser from "phaser"
+
 
 
 export class GameStateMachine {

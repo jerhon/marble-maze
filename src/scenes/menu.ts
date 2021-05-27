@@ -1,4 +1,6 @@
 import { GameStateMachine } from "./gameStateMachine";
+import Phaser from "phaser"
+
 
 export const MENU_SCENE = 'Menu';
 
@@ -35,7 +37,7 @@ export class MenuScene extends Phaser.Scene {
         top += 50;
 
         let idx = 0;
-        for (let opt of this.options) {           
+        for (let opt of this.options) {
             let optText = this.add.text(10, top, opt, {
                 fontSize: '40px',
                 fontFamily: 'Arial',

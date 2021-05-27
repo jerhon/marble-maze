@@ -1,9 +1,11 @@
 import { GameStateMachine } from "./gameStateMachine";
-import { MazeResponse } from "./loading";
 import { Maze } from "../maze";
+import {MazeAsset} from "../maze/maze-loader";
+import Phaser from "phaser"
+
 
 export interface GameData {
-  maze: MazeResponse;
+  maze: MazeAsset;
 }
 
 export const GAME_SCENE = 'Game';
@@ -54,11 +56,11 @@ export class GameScene extends Phaser.Scene {
     this.pointer = this.input.pointer1;
 
     this.input.enabled = true;
-    
+
+    this.maze = new Maze(this.gameData.maze, this.wallDim, 0, 0);
+
     // calculate the dimensions for positioning
-    this.calculateDimensions(this.gameData.maze.map.length);
-    
-    this.maze = new Maze(this.gameData.maze.map, this.gameData.maze.startingPosition, this.gameData.maze.endingPosition, this.wallDim, 0, 0);
+    this.calculateDimensions(this.maze.getWidth());
 
     // create everything else
     this.createWalls();
@@ -90,7 +92,7 @@ export class GameScene extends Phaser.Scene {
       wall.body.checkCollision.right = !coords.adjacent.right;
       wall.body.setSize(this.wallDim, this.wallDim);
       wall.body.immovable = true;
-      
+
       this.walls.add(wall);
     }
   }
@@ -113,7 +115,7 @@ export class GameScene extends Phaser.Scene {
     return end as Phaser.GameObjects.Rectangle & { body : Phaser.Physics.Arcade.Body } ;
   }
 
-  /** Moves to the next level. */
+  /** Moves to the next maze. */
   nextLevel() {
     this.stateMachine.startLoadingLevel({ });
   }
@@ -127,12 +129,12 @@ export class GameScene extends Phaser.Scene {
         marble.body.setAccelerationY( ( halfStage - this.pointer.y) / halfStage * -100  );
         marble.body.setAccelerationX( ( halfStage - this.pointer.x) / halfStage * -100  );
       } else {
-        marble.body.setAccelerationY( (this.beta / 180) * 150 );  
+        marble.body.setAccelerationY( (this.beta / 180) * 150 );
         marble.body.setAccelerationX( (this.gamma / 180) * 150 )
-      } 
+      }
     }
   }
-  
+
   /** Update for a single frame. */
   public update(time: number, delta: number) {
     this.updateMotion();

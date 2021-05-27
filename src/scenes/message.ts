@@ -1,3 +1,4 @@
+import Phaser from "phaser"
 
 export const MESSAGE_SCENE = "Message";
 
@@ -30,5 +31,5 @@ export class MessageScene extends Phaser.Scene {
             this.scene.start(data.nextScene, data.nextSceneData);
         });
     }
-    
+
 }
