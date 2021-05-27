@@ -21,10 +21,8 @@ export class MazeLoader {
         ]
     }
 
-    async loadMaze(name: string): Promise<MazeAsset> {
-        const fileContents = await fetch(`/assets/mazes/${name}`)
-        const response = await fileContents.text()
-        const lines = response.split(/[\r\n]/)
+    parseMaze(name: string, mazeText: string): MazeAsset {
+        const lines = mazeText.split(/[\r\n]/).filter((r) => r !== "")
         const rows = lines.map((x) => x.split(""))
         let startPosition: Position = { x: 0, y: 0 }
         let endPosition: Position  = { x: 0, y: 0 }
@@ -49,4 +47,9 @@ export class MazeLoader {
         }
     }
 
+    async loadMaze(name: string): Promise<MazeAsset> {
+        const fileContents = await fetch(`/assets/mazes/${name}`)
+        const response = await fileContents.text()
+        return this.parseMaze(name, response)
+    }
 }
