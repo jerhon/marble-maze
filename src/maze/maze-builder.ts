@@ -1,5 +1,6 @@
 import * as _ from 'underscore';
-import {MazeAsset} from "./maze/maze-loader";
+import {MazeFile} from "./maze-loader";
+import {Scene} from "phaser";
 
 interface Position {
     x: number;
@@ -19,11 +20,11 @@ interface MazeTile {
     type: string;
 }
 
-export class Maze {
+export class MazeBuilder {
 
     public constructor(
 
-        private _maze: MazeAsset,
+        private _maze: MazeFile,
         private wallSize: number,
         private offsetX: number,
         private offsetY: number) {
@@ -98,6 +99,25 @@ export class Maze {
             x: (x * tileSize) + (tileSize / 2) + offsetX,
             y: (y * tileSize) + (tileSize / 2) + offsetY
         };
+    }
+
+    /** Creates the walls for the game. */
+    addWalls(scene: Scene) {
+        const walls = scene.physics.add.staticGroup();
+        for (let coords of this.getWalls()) {
+            let wall = scene.physics.add.staticSprite(coords.position.x, coords.position.y, 'wall');
+            wall.setDisplaySize(this.wallSize, this.wallSize);
+            wall.enableBody(true, coords.position.x, coords.position.y, true, true);
+            wall.body.checkCollision.up = !coords.adjacent.top;
+            wall.body.checkCollision.down = !coords.adjacent.bottom;
+            wall.body.checkCollision.left = !coords.adjacent.left;
+            wall.body.checkCollision.right = !coords.adjacent.right;
+            wall.body.setSize(this.wallSize, this.wallSize);
+            wall.body.immovable = true;
+            walls.add(wall);
+        }
+
+        return { walls }
     }
 
 

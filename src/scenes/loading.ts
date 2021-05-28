@@ -23,12 +23,11 @@ export class LoadingScene extends Phaser.Scene {
   }
 
   public create(data: LoadingData) {
+    this.add.text(50, 50, 'LOADING...');
 
     this._loader.loadMaze("maze1.txt")
         .then((maze) => {
           this.scene.start('Game', { maze});
         })
-
-    this.add.text(50, 50, 'LOADING...');
   }
 }

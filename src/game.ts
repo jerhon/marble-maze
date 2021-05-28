@@ -15,7 +15,7 @@ import "./style.css"
 
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
-    title: 'Marble Maze',
+    title: 'Marble MazeBuilder',
     type: Phaser.AUTO,
     physics: {
         default: 'arcade',

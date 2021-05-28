@@ -4,9 +4,7 @@ import { LoadingData, LOADING_SCENE } from "./loading";
 import { MENU_SCENE } from "./menu";
 import Phaser from "phaser"
 
-
-
-export class GameStateMachine {
+export class SceneManager {
 
     constructor(private readonly scene: Phaser.Scene) { }
 

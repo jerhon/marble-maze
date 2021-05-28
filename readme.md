@@ -1,4 +1,4 @@
-# Marble Maze
+# Marble MazeBuilder
 
 This is a simple game written in Phaser 3.
 
@@ -16,7 +16,7 @@ The game is divided up into 3 Phaser game Scenes.
 The Menu scene displays the main menu on the game.  
 
 ## Loading Scene
-The Loading scene makes the API call to the No-ops Maze service.  This passes the data along to the Game scene.
+The Loading scene makes the API call to the No-ops MazeBuilder service.  This passes the data along to the Game scene.
 
 
 ## Game Scene

@@ -1,4 +1,4 @@
-import { GameStateMachine } from "./gameStateMachine";
+import { SceneManager } from "./scene-manager";
 import Phaser from "phaser"
 
 
@@ -12,13 +12,13 @@ const menuConfig: Phaser.Types.Scenes.SettingsConfig = {
 
 export class MenuScene extends Phaser.Scene {
 
-    private stateMachine: GameStateMachine;
+    private stateMachine: SceneManager;
     currentOption = 0;
 
     constructor() {
         super(menuConfig);
 
-        this.stateMachine = new GameStateMachine(this);
+        this.stateMachine = new SceneManager(this);
     }
 
     options = [
@@ -29,7 +29,7 @@ export class MenuScene extends Phaser.Scene {
 
     public create() {
         let top = 0;
-        let title = this.add.text(25, 25, 'Marble Maze', { fontSize: '50px', align: 'center' });
+        let title = this.add.text(25, 25, 'Marble MazeBuilder', { fontSize: '50px', align: 'center' });
         title.setWordWrapWidth(this.game.canvas.width - 20, true);
         title.setFixedSize(this.game.canvas.width - 20, 0);
 

@@ -1,11 +1,11 @@
-import { GameStateMachine } from "./gameStateMachine";
-import { Maze } from "../maze";
-import {MazeAsset} from "../maze/maze-loader";
+import { SceneManager } from "./scene-manager";
+import { MazeBuilder } from "../maze/maze-builder";
+import {MazeFile} from "../maze/maze-loader";
 import Phaser from "phaser"
 
 
 export interface GameData {
-  maze: MazeAsset;
+  maze: MazeFile;
 }
 
 export const GAME_SCENE = 'Game';
@@ -26,14 +26,14 @@ export class GameScene extends Phaser.Scene {
   private gamma: number = 0;
 
   private gameData: GameData;
-  private stateMachine: GameStateMachine;
+  private sceneManager: SceneManager;
 
   private stageDim : number;
   private wallDim : number;
   private marbleRadius : number;
   private pointer: Phaser.Input.Pointer;
 
-  maze: Maze;
+  maze: MazeBuilder;
 
   constructor() {
     super(sceneConfig);
@@ -47,7 +47,7 @@ export class GameScene extends Phaser.Scene {
   public create(data: GameData) {
 
     this.gameData = data;
-    this.stateMachine = new GameStateMachine(this);
+    this.sceneManager = new SceneManager(this);
     if ((window as any).DeviceOrientationEvent) {
       window.addEventListener("deviceorientation", this.deviceOrientationChanged.bind(this));
     };
@@ -57,19 +57,19 @@ export class GameScene extends Phaser.Scene {
 
     this.input.enabled = true;
 
-    this.maze = new Maze(this.gameData.maze, this.wallDim, 0, 0);
-
     // calculate the dimensions for positioning
-    this.calculateDimensions(this.maze.getWidth());
+    this.calculateDimensions(this.gameData.maze.rows[0].length);
 
-    // create everything else
-    this.createWalls();
+
+    this.maze = new MazeBuilder(this.gameData.maze, this.wallDim, 0, 0);
+    const { walls } = this.maze.addWalls(this);
+    this.walls = walls;
 
     this.marble1 = this.createMarble();
     this.endSquare = this.createEndSquare();
 
-    let marbleCollider = this.physics.add.collider(this.marble1, this.walls);
-    let gameEndCollider = this.physics.add.overlap(this.marble1, this.endSquare, this.nextLevel.bind(this));
+    this.physics.add.collider(this.marble1, this.walls);
+    this.physics.add.overlap(this.marble1, this.endSquare, this.nextLevel.bind(this));
   }
 
   /** Calculates dimensions needed to place game sprites and assets */
@@ -79,23 +79,6 @@ export class GameScene extends Phaser.Scene {
     this.marbleRadius = Math.floor(this.wallDim / 4);
   }
 
-  /** Creates the walls for the game. */
-  createWalls() {
-    this.walls = this.physics.add.staticGroup();
-    for (let coords of this.maze.getWalls()) {
-      let wall = this.physics.add.staticSprite(coords.position.x, coords.position.y, 'wall');
-      wall.setDisplaySize(this.wallDim, this.wallDim);
-      wall.enableBody(true, coords.position.x, coords.position.y, true, true);
-      wall.body.checkCollision.up = !coords.adjacent.top;
-      wall.body.checkCollision.down = !coords.adjacent.bottom;
-      wall.body.checkCollision.left = !coords.adjacent.left;
-      wall.body.checkCollision.right = !coords.adjacent.right;
-      wall.body.setSize(this.wallDim, this.wallDim);
-      wall.body.immovable = true;
-
-      this.walls.add(wall);
-    }
-  }
 
   /** Creates a marble. */
   createMarble() : Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body } {
@@ -117,7 +100,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Moves to the next maze. */
   nextLevel() {
-    this.stateMachine.startLoadingLevel({ });
+    this.sceneManager.startLoadingLevel({ });
   }
 
   /** Update the motion of objects when a frame tick occurs. */
