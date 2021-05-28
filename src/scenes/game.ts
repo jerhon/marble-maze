@@ -21,6 +21,7 @@ export class GameScene extends Phaser.Scene {
   private endSquare: Phaser.GameObjects.Rectangle  & { body : Phaser.Physics.Arcade.Body };
   private walls: Phaser.GameObjects.Group;
   private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
+  private dimensions: { stage: number };
 
   private beta: number = 0;
   private gamma: number = 0;
@@ -28,9 +29,6 @@ export class GameScene extends Phaser.Scene {
   private gameData: GameData;
   private sceneManager: SceneManager;
 
-  private stageDim : number;
-  private wallDim : number;
-  private marbleRadius : number;
   private pointer: Phaser.Input.Pointer;
 
   maze: MazeBuilder;
@@ -58,15 +56,15 @@ export class GameScene extends Phaser.Scene {
     this.input.enabled = true;
 
     // calculate the dimensions for positioning
-    this.calculateDimensions(this.gameData.maze.rows[0].length);
+    const dimensions = this.calculateDimensions(this.gameData.maze.rows[0].length);
+    this.dimensions = dimensions;
 
-
-    this.maze = new MazeBuilder(this.gameData.maze, this.wallDim, 0, 0);
+    this.maze = new MazeBuilder(this.gameData.maze, dimensions.wall, 0, 0);
     const { walls } = this.maze.addWalls(this);
     this.walls = walls;
 
-    this.marble1 = this.createMarble();
-    this.endSquare = this.createEndSquare();
+    this.marble1 = this.createMarble(dimensions.marble);
+    this.endSquare = this.createEndSquare(dimensions.wall);
 
     this.physics.add.collider(this.marble1, this.walls);
     this.physics.add.overlap(this.marble1, this.endSquare, this.nextLevel.bind(this));
@@ -74,26 +72,30 @@ export class GameScene extends Phaser.Scene {
 
   /** Calculates dimensions needed to place game sprites and assets */
   calculateDimensions(tileCount: number) {
-    this.stageDim = Math.min(this.game.canvas.height, this.game.canvas.width);
-    this.wallDim = Math.ceil(this.stageDim / tileCount);
-    this.marbleRadius = Math.floor(this.wallDim / 4);
+    const stage = Math.min(this.game.canvas.height, this.game.canvas.width);
+    const wall = Math.ceil(stage / tileCount);
+    const marble = Math.floor(wall / 4);
+    return { stage, wall, marble }
   }
 
 
   /** Creates a marble. */
-  createMarble() : Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body } {
+  createMarble(marbleRadius: number) : Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body } {
     let {x,y} = this.maze.getStartPosition();
-    let marble = this.add.circle(x, y, this.marbleRadius, 0xFF0000) as any;
+    let marble = this.add.rectangle(x, y, marbleRadius,marbleRadius, 0xFF0000) as any;
     let ret = this.physics.add.existing(marble) as Phaser.GameObjects.Arc & { body : Phaser.Physics.Arcade.Body };
     ret.body.setCollideWorldBounds(true);
     ret.body.setBounce(0.6, 0.6);
     ret.body.setDrag(5, 5);
-    return ret;
+
+    console.log(marbleRadius);
+    console.log({x,y})
+    return marble;
   }
 
-  createEndSquare() :  Phaser.GameObjects.Rectangle & { body : Phaser.Physics.Arcade.Body } {
+  createEndSquare(wallSize: number) :  Phaser.GameObjects.Rectangle & { body : Phaser.Physics.Arcade.Body } {
     let {x,y} = this.maze.getEndPosition();
-    let end = this.add.rectangle(x, y, this.wallDim, this.wallDim, 0xFF3300);
+    let end = this.add.rectangle(x, y, wallSize, wallSize, 0xFF3300);
     this.physics.add.existing(end, true);
     return end as Phaser.GameObjects.Rectangle & { body : Phaser.Physics.Arcade.Body } ;
   }
@@ -108,7 +110,7 @@ export class GameScene extends Phaser.Scene {
 
     for (let marble of [this.marble1]) {
       if (this.pointer.isDown) {
-        let halfStage = this.stageDim / 2;
+        let halfStage = this.dimensions.stage / 2;
         marble.body.setAccelerationY( ( halfStage - this.pointer.y) / halfStage * -100  );
         marble.body.setAccelerationX( ( halfStage - this.pointer.x) / halfStage * -100  );
       } else {
