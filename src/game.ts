@@ -1,7 +1,3 @@
-
-import "regenerator-runtime/runtime";
-import "core-js/stable";
-
 import Phaser from "phaser";
 import {serviceWorker} from "./index";
 
