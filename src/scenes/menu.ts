@@ -28,6 +28,12 @@ export class MenuScene extends Phaser.Scene {
     menuOptions: Phaser.GameObjects.Text[] = [];
 
     public create() {
+
+        if (window.location.hash)
+        {
+            this.stateMachine.startLoadingLevel({});
+        }
+
         let top = 0;
         let title = this.add.text(25, 25, 'Marble MazeBuilder', { fontSize: '50px', align: 'center' });
         title.setWordWrapWidth(this.game.canvas.width - 20, true);
