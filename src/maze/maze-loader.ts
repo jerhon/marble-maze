@@ -47,9 +47,9 @@ export class MazeLoader {
         }
     }
 
-    async loadMaze(name: string): Promise<MazeFile> {
-        const fileContents = await fetch(`/assets/mazes/${name}`)
+    async loadMaze(filename: string): Promise<MazeFile> {
+        const fileContents = await fetch(`/assets/mazes/${filename}`)
         const response = await fileContents.text()
-        return this.parseMaze(name, response)
+        return this.parseMaze(filename, response)
     }
 }

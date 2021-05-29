@@ -20,6 +20,7 @@ interface MazeTile {
     type: string;
 }
 
+/** Builds a maze based off of a file. */
 export class MazeBuilder {
 
     public constructor(

@@ -35,7 +35,7 @@ export class MenuScene extends Phaser.Scene {
         }
 
         let top = 0;
-        let title = this.add.text(25, 25, 'Marble MazeBuilder', { fontSize: '50px', align: 'center' });
+        let title = this.add.text(25, 25, 'Marble Maze', { fontSize: '50px', align: 'center' });
         title.setWordWrapWidth(this.game.canvas.width - 20, true);
         title.setFixedSize(this.game.canvas.width - 20, 0);
 

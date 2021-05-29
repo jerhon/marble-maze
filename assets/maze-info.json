@@ -1,0 +1,10 @@
+{
+  "mazes": [
+    {
+      "id": "starter",
+      "title": "Starter Maze",
+      "filename":  "maze1.txt",
+      "next": null
+    }
+  ]
+}
