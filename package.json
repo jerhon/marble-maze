@@ -16,10 +16,13 @@
     "@types/jest": "^26.0.23",
     "@types/mocha": "^8.2.2",
     "@types/underscore": "^1.11.2",
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "copy-webpack-plugin": "^9.0.0",
     "css-loader": "^5.2.6",
+    "eslint": "^7.27.0",
     "fork-ts-checker-webpack-plugin": "^6.2.10",
     "git-revision-webpack-plugin": "^5.0.0",
     "html-webpack-injector": "^1.1.4",
@@ -36,7 +39,9 @@
   "scripts": {
     "start": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint src --ext .ts,.js",
+    "lint:fix": "eslint src --ext .ts,.js --fix"
   },
   "author": "Jeremy Honl",
   "license": "MIT"

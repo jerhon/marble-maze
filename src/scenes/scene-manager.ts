@@ -1,34 +1,35 @@
-import { GameData, GAME_SCENE } from "./game";
-import { MessageData, MESSAGE_SCENE } from "./message";
-import { LoadingData, LOADING_SCENE } from "./loading";
-import { MENU_SCENE } from "./menu";
+import {GameData, GAME_SCENE} from "./game";
+import {MessageData, MESSAGE_SCENE} from "./message";
+import {LOADING_SCENE} from "./loading";
+import {MENU_SCENE} from "./menu";
 import Phaser from "phaser"
 
 export class SceneManager {
 
-    constructor(private readonly scene: Phaser.Scene) { }
+	constructor(private readonly scene: Phaser.Scene) {
+	}
 
-    startLoadingLevel(data: LoadingData) {
-        this.scene.scene.stop();
-        this.scene.scene.start(LOADING_SCENE, data);
-    }
+	startLoadingLevel(): void {
+		this.scene.scene.stop();
+		this.scene.scene.start(LOADING_SCENE);
+	}
 
-    startLevel(data: GameData) {
-        this.scene.scene.stop();
-        this.scene.scene.start(GAME_SCENE, data);
-    }
+	startLevel(data: GameData): void {
+		this.scene.scene.stop();
+		this.scene.scene.start(GAME_SCENE, data);
+	}
 
-    startMenu() {
-        this.scene.scene.stop();
-        this.scene.scene.start(MENU_SCENE);
-    }
+	startMenu(): void {
+		this.scene.scene.stop();
+		this.scene.scene.start(MENU_SCENE);
+	}
 
-    startMessage(data: MessageData) {
-        this.scene.scene.stop();
-        this.scene.scene.start(MESSAGE_SCENE, data);
-    }
+	startMessage(data: MessageData): void {
+		this.scene.scene.stop();
+		this.scene.scene.start(MESSAGE_SCENE, data);
+	}
 
-    startLose() {
-        this.startMessage({ message: 'You Lost!', nextScene: 'Menu', nextSceneData: {} });
-    }
+	startLose(): void {
+		this.startMessage({message: 'You Lost!', nextScene: 'Menu', nextSceneData: {}});
+	}
 }

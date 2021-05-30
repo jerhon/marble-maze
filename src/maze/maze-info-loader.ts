@@ -1,29 +1,27 @@
-
 export interface MazeInfoFile {
-    mazes: MazeInfo[]
+	mazes: MazeInfo[]
 }
 
 export interface MazeInfo {
-    id: string,
-    filename: string,
-    title: string,
-    next: string
+	id: string,
+	filename: string,
+	title: string,
+	next: string
 }
 
 export class MazeInfoLoader {
 
-    _mazeInfo: MazeInfoFile;
+	_mazeInfo: MazeInfoFile;
 
-    async loadMazeInfo() {
-        const response = await fetch('/assets/maze-info.json')
-        this._mazeInfo = await response.json() as MazeInfoFile
-    }
+	async loadMazeInfo(): Promise<void> {
+		const response = await fetch('/assets/maze-info.json')
+		this._mazeInfo = await response.json() as MazeInfoFile
+	}
 
-    async getMazeInfoById(id: string) {
-        if (!this._mazeInfo) {
-            await this.loadMazeInfo();
-        }
-
-        return this._mazeInfo.mazes.find((m) => m.id === id)
-    }
+	async getMazeInfoById(id: string): Promise<MazeInfo> {
+		if (!this._mazeInfo) {
+			await this.loadMazeInfo();
+		}
+		return this._mazeInfo.mazes.find((m) => m.id === id)
+	}
 }

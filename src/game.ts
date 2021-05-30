@@ -8,34 +8,32 @@ import { MessageScene } from './scenes/message';
 import "./style.css"
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
-    title: 'Marble Maze',
-    type: Phaser.AUTO,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            debug: true,
-        },
-    },
-    scale: {
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
-        fullscreenTarget: 'game',
-    },
-    height: 704,
-    width: 704,
-    scene: [MenuScene, LoadingScene, GameScene, MessageScene],
-    parent: 'game',
-    backgroundColor: '#000000',
-    disableContextMenu: true,
+	title: 'Marble Maze',
+	type: Phaser.AUTO,
+	physics: {
+		default: 'arcade',
+		arcade: {
+			debug: true,
+		},
+	},
+	scale: {
+		mode: Phaser.Scale.FIT,
+		autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
+		fullscreenTarget: 'game',
+	},
+	height: 704,
+	width: 704,
+	scene: [MenuScene, LoadingScene, GameScene, MessageScene],
+	parent: 'game',
+	backgroundColor: '#000000',
+	disableContextMenu: true,
 
 };
 
-export function run() {
+export function run(): void {
+	if (process.env.NODE_ENV === 'prod') {
+		serviceWorker();
+	}
 
-    if (process.env.NODE_ENV === 'prod') {
-        serviceWorker();
-    }
-
-
-    let g =  new Phaser.Game(gameConfig);
+	new Phaser.Game(gameConfig);
 }

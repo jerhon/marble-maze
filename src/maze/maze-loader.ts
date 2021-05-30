@@ -15,41 +15,35 @@ export interface MazeFile {
 
 export class MazeLoader {
 
-    async getMazes() {
-        return [
-            "maze1.txt"
-        ]
-    }
+	parseMaze(name: string, mazeText: string): MazeFile {
+		const lines = mazeText.split('\r\n').filter((r) => r !== "")
+		const rows = lines.map((x) => x.split(""))
+		let startPosition: Position = { x: 0, y: 0 }
+		let endPosition: Position  = { x: 0, y: 0 }
 
-    parseMaze(name: string, mazeText: string): MazeFile {
-        const lines = mazeText.split('\r\n').filter((r) => r !== "")
-        const rows = lines.map((x) => x.split(""))
-        let startPosition: Position = { x: 0, y: 0 }
-        let endPosition: Position  = { x: 0, y: 0 }
+		for ( let y = 0; y < rows.length; y++) {
+			for (let x = 0; x < rows[y].length; x++)
+			{
+				const char = rows[y][x]
+				if (char === 'S') {
+					startPosition = { x, y }
+				} else if (char === 'E') {
+					endPosition = {x, y}
+				}
+			}
+		}
 
-        for ( let y = 0; y < rows.length; y++) {
-            for (let x = 0; x < rows[y].length; x++)
-            {
-                const char = rows[y][x]
-                if (char === 'S') {
-                    startPosition = { x, y }
-                } else if (char === 'E') {
-                    endPosition = {x, y}
-                }
-            }
-        }
+		return {
+			name,
+			startPosition,
+			endPosition,
+			rows
+		}
+	}
 
-        return {
-            name,
-            startPosition,
-            endPosition,
-            rows
-        }
-    }
-
-    async loadMaze(filename: string): Promise<MazeFile> {
-        const fileContents = await fetch(`/assets/mazes/${filename}`)
-        const response = await fileContents.text()
-        return this.parseMaze(filename, response)
-    }
+	async loadMaze(filename: string): Promise<MazeFile> {
+		const fileContents = await fetch(`/assets/mazes/${filename}`)
+		const response = await fileContents.text()
+		return this.parseMaze(filename, response)
+	}
 }
