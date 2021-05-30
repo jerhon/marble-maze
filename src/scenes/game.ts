@@ -101,24 +101,61 @@ export class GameScene extends Phaser.Scene {
 		this.sceneManager.startLoadingLevel();
 	}
 
-	/** Update the motion of objects when a frame tick occurs. */
-	updateMotion(): void {
+	processKeyInput(): boolean {
+		const marble = this.marble1;
+		let processed = false;
+		if (this.cursorKeys.right.isDown) {
+			marble.body.setAccelerationX(50);
+			processed = true;
+		}
+		else if (this.cursorKeys.left.isDown) {
+			marble.body.setAccelerationX(-50)
+			processed = true;
+		}
+		if (this.cursorKeys.down.isDown) {
+			marble.body.setAccelerationY(50)
+			processed = true;
+		}
+		else if (this.cursorKeys.up.isDown) {
+			marble.body.setAccelerationY(-50)
+			processed = true;
+		}
+		return processed;
+	}
 
-		for (const marble of [this.marble1]) {
-			if (this.pointer.isDown) {
-				const halfStage = this.dimensions.stage / 2;
-				marble.body.setAccelerationY((halfStage - this.pointer.y) / halfStage * -100);
-				marble.body.setAccelerationX((halfStage - this.pointer.x) / halfStage * -100);
-			} else {
-				marble.body.setAccelerationY((this.beta / 180) * 150);
-				marble.body.setAccelerationX((this.gamma / 180) * 150)
-			}
+	processPointerInput(): boolean {
+		if (this.pointer.isDown) {
+			const marble = this.marble1;
+			const halfStage = this.dimensions.stage / 2;
+			marble.body.setAccelerationY((halfStage - this.pointer.y) / halfStage * -100);
+			marble.body.setAccelerationX((halfStage - this.pointer.x) / halfStage * -100);
+			return true;
+		}
+		return false;
+	}
+
+	processDeviceOrientationInput():void {
+		const marble = this.marble1;
+		marble.body.setAccelerationY((this.beta / 180) * 150);
+		marble.body.setAccelerationX((this.gamma / 180) * 150)
+	}
+
+	updateInputs(): void {
+		let processed = false;
+		if (!processed) {
+			processed = this.processKeyInput();
+		}
+		if (!processed) {
+			processed = this.processPointerInput();
+		}
+		if (!processed) {
+			this.processDeviceOrientationInput()
 		}
 	}
 
 	/** Update for a single frame. */
-	public update(): void {
-		this.updateMotion();
+	update(): void {
+		this.updateInputs();
 	}
 
 	public deviceOrientationChanged(evt: DeviceOrientationEvent): void {
