@@ -5,6 +5,13 @@
       "title": "Starter Maze",
       "filename":  "maze1.txt",
       "next": null
+    },
+    {
+      "id": "spiral",
+      "title": "Spiral Maze",
+      "filename":  "maze2.txt",
+      "next": null
     }
-  ]
+  ],
+  "order": ["starter", "spiral"]
 }

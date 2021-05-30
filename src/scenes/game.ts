@@ -5,6 +5,7 @@ import Phaser from "phaser"
 
 
 export interface GameData {
+	id: string;
 	maze: MazeFile;
 }
 
@@ -98,7 +99,7 @@ export class GameScene extends Phaser.Scene {
 
 	/** Moves to the next maze. */
 	nextLevel(): void {
-		this.sceneManager.startLoadingLevel();
+		this.sceneManager.nextLevel(this.gameData.id);
 	}
 
 	processKeyInput(): boolean {

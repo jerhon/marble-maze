@@ -11,7 +11,12 @@ export class SceneManager {
 
 	startLoadingLevel(): void {
 		this.scene.scene.stop();
-		this.scene.scene.start(LOADING_SCENE);
+		this.scene.scene.start(LOADING_SCENE, {  });
+	}
+
+	nextLevel(id: string): void {
+		this.scene.scene.stop();
+		this.scene.scene.start(LOADING_SCENE, { id, advance: true })
 	}
 
 	startLevel(data: GameData): void {
