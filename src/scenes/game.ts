@@ -69,7 +69,7 @@ export class GameScene extends Phaser.Scene {
 
 	/** Calculates dimensions needed to place game sprites and assets */
 	calculateDimensions(tileCount: number): {stage: number, wall: number, marble: number} {
-		const stage = Math.min(this.game.canvas.height, this.game.canvas.width);
+		const stage = Math.min(+this.game.config.height, +this.game.config.width);
 		const wall = Math.ceil(stage / tileCount);
 		const marble = Math.floor(wall / 4);
 		return {stage, wall, marble}
