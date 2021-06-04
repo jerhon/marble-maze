@@ -16,7 +16,11 @@ export interface MazeFile {
 export class MazeLoader {
 
 	parseMaze(name: string, mazeText: string): MazeFile {
-		const lines = mazeText.split('\r\n').filter((r) => r !== "")
+		const lines = mazeText
+			.replace('\r\n', '\n')
+			.split('\n')
+			.filter((r) => r !== "")
+
 		const rows = lines.map((x) => x.split(""))
 		let startPosition: Position = { x: 0, y: 0 }
 		let endPosition: Position  = { x: 0, y: 0 }
