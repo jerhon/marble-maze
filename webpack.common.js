@@ -48,32 +48,19 @@ module.exports = {
 	},
 
 	plugins: [
-		new CopyWebpackPlugin(
-			{
-				patterns: [
-					{
-						from: path.resolve(__dirname, 'assets'),
-						to: path.resolve(__dirname, 'dist/assets')
-					},
-					{
-						from: path.resolve(__dirname, 'LICENSE.txt'),
-						to:  path.resolve(__dirname, 'dist/LICENSE.txt')
-					}
-				]
-			}),
-
-/*
-new WorkboxPlugin.GenerateSW({
-clientsClaim: true,
-skipWaiting: true,
-cacheId: gitRevisionPlugin.commithash() // based on the version of the application, especially usefull for builds
-})*/
-new ForkTsCheckerWebpackPlugin(),
-	new webpack.DefinePlugin({
-		'typeof CANVAS_RENDERER': JSON.stringify(true),
-		'typeof WEBGL_RENDERER': JSON.stringify(true)
-	}),
-].
-concat(htmlPlugins)
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: path.resolve(__dirname, 'assets'),
+					to: path.resolve(__dirname, 'dist/assets')
+				},
+				{
+					from: path.resolve(__dirname, 'LICENSE.txt'),
+					to:  path.resolve(__dirname, 'dist/LICENSE.txt')
+				}
+			]
+		}),
+		new ForkTsCheckerWebpackPlugin()
+	].concat(htmlPlugins)
 }
 
