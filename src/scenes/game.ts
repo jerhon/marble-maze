@@ -72,7 +72,12 @@ export class GameScene extends Phaser.Scene {
 		const stage = Math.min(+this.game.config.height, +this.game.config.width);
 		const wall = Math.ceil(stage / tileCount);
 		const marble = Math.floor(wall / 4);
-		return {stage, wall, marble}
+		const dimensions = {stage, wall, marble}
+
+		console.log(dimensions)
+		console.log('game:', {height: this.game.config.height, width: this.game.config.width}, 'tileCount: ', tileCount )
+
+		return dimensions;
 	}
 
 
