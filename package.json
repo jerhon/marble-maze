@@ -34,14 +34,28 @@
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^4.0.0-beta.3",
     "webpack-merge": "^5.7.3",
-    "workbox-webpack-plugin": "^6.1.5"
+    "workbox-webpack-plugin": "^6.1.5",
+    "cordova-android": "^9.1.0",
+    "cordova-browser": "^6.0.0",
+    "cordova-plugin-whitelist": "^1.3.4"
   },
   "scripts": {
     "start": "webpack serve --config webpack.dev.js",
+    "start:android": "cordova emulate android",
     "build": "webpack --config webpack.prod.js",
+    "build:mobile": "webpack --config webpack.cordova.js && cordova prepare && cordova build",
     "test": "jest",
     "lint": "eslint src --ext .ts,.js",
     "lint:fix": "eslint src --ext .ts,.js --fix"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {}
+    },
+    "platforms": [
+      "browser",
+      "android"
+    ]
   },
   "author": "Jeremy Honl",
   "license": "MIT"
