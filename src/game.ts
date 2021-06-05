@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import {serviceWorker} from "./index";
+import { registerServiceWorker } from "./service-worker";
 import { GameScene } from './scenes/game';
 import { LoadingScene } from './scenes/loading';
 import { MenuScene } from './scenes/menu';
@@ -32,7 +32,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
 
 export function run(): void {
 	if (process.env.NODE_ENV === 'production') {
-		serviceWorker();
+		registerServiceWorker();
 	}
 
 	new Phaser.Game(gameConfig);

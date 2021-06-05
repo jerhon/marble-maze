@@ -6,7 +6,7 @@ module.exports = merge(common, {
 
   mode: 'production',
   plugins: [
-    new webpack.EnvironmentPlugin({
+    new webpack.DefinePlugin({
       NODE_ENV: 'production'
     })
   ]

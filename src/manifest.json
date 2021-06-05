@@ -15,6 +15,7 @@
 			"src": "assets/marble_maze.png",
 			"sizes": "144x144",
 			"type": "image/png"
-		}],
+		}
+	],
 	"start_url": "/game.html?mode=pwa"
 }

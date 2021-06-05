@@ -58,10 +58,15 @@ module.exports = {
 				{
 					from: path.resolve(__dirname, 'LICENSE.txt'),
 					to:  path.resolve(__dirname, 'dist/LICENSE.txt')
+				},
+				{
+					from: path.resolve(__dirname, 'src/manifest.json'),
+					to: path.resolve(__dirname, 'dist/manifest.json')
 				}
 			]
 		}),
-		new ForkTsCheckerWebpackPlugin()
+		new ForkTsCheckerWebpackPlugin(),
+		new WorkboxPlugin.GenerateSW({})
 	].concat(htmlPlugins)
 }
 

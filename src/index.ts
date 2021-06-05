@@ -1,33 +1,15 @@
 import "./style.css"
-
-let deferredPrompt;
-
-export function serviceWorker(): void {
-	if ('serviceWorker' in navigator) {
-		window.addEventListener('load', () => {
-			navigator.serviceWorker.register('/service-worker.js').then(registration => {
-				console.log('SW registered: ', registration);
-			}).catch(registrationError => {
-				console.log('SW registration failed: ', registrationError);
-			});
-		});
-	}
-}
+import {promptForPwaInstall, registerForPwaInstallation, registerServiceWorker} from "./service-worker";
 
 export function run(): void {
-	if (process.env.NODE_ENV === 'prod') {
-		serviceWorker();
-
-		window.addEventListener('beforeinstallprompt', (e) => {
-			// Stash the event so it can be triggered later.
-			e.preventDefault();
-			deferredPrompt = e;
+	if (registerServiceWorker()) {
+		registerForPwaInstallation(() => {
 			document.getElementById('pwa').hidden = false;
-		});
+		})
 	}
 
 	document.getElementById('install-pwa').addEventListener('click', () => {
-		deferredPrompt.prompt();
+		promptForPwaInstall();
 	});
 
 	document.getElementById('license').addEventListener('change', () => {
@@ -41,5 +23,3 @@ export function run(): void {
 		document.location.href = "/game.html";
 	});
 }
-
-
