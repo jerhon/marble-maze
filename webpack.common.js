@@ -25,7 +25,8 @@ module.exports = {
 		library: {
 			type: 'window',
 			name: ['marbleMaze', '[name]']
-		}
+		},
+		clean: true
 	},
 	module: {
 		rules: [
