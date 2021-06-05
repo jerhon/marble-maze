@@ -72,12 +72,7 @@ export class GameScene extends Phaser.Scene {
 		const stage = Math.min(+this.game.config.height, +this.game.config.width);
 		const wall = Math.ceil(stage / tileCount);
 		const marble = Math.floor(wall / 4);
-		const dimensions = {stage, wall, marble}
-
-		console.log(dimensions)
-		console.log('game:', {height: this.game.config.height, width: this.game.config.width}, 'tileCount: ', tileCount )
-
-		return dimensions;
+		return {stage, wall, marble}
 	}
 
 
@@ -89,9 +84,6 @@ export class GameScene extends Phaser.Scene {
 		ret.body.setCollideWorldBounds(true);
 		ret.body.setBounce(0.6, 0.6);
 		ret.body.setDrag(5, 5);
-
-		console.log(marbleRadius);
-		console.log({x, y})
 		return marble;
 	}
 
