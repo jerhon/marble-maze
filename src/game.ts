@@ -31,7 +31,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
 };
 
 export function run(): void {
-	if (process.env.NODE_ENV === 'prod') {
+	if (process.env.NODE_ENV === 'production') {
 		serviceWorker();
 	}
 
